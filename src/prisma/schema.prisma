@@ -1,0 +1,68 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+model User {
+  id        String     @id @default(uuid())
+  name      String?
+  email     String     @unique
+  password  String     // Hashed password
+  role      Role       @default(USER)
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  auditLogs AuditLog[]
+}
+
+model Category {
+  id        String    @id @default(uuid())
+  name      String
+  slug      String    @unique
+  products  Product[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+model Product {
+  id               String         @id @default(uuid())
+  name             String
+  slug             String         @unique
+  shortDescription String
+  description      String
+  price            Float
+  stock            Int            @default(0)
+  sku              String         @unique
+  status           String         @default("ACTIVE") // ACTIVE / INACTIVE
+  deletedAt        DateTime?      // Soft delete
+  categoryId       String
+  category         Category       @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  images           ProductImage[]
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @updatedAt
+}
+
+model ProductImage {
+  id        String   @id @default(uuid())
+  url       String
+  productId String
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+}
+
+model AuditLog {
+  id        String   @id @default(uuid())
+  action    String   // "CREATE_PRODUCT", "UPDATE_PRODUCT", "DELETE_PRODUCT", etc.
+  details   String   // JSON string of changes
+  userId    String?
+  user      User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  createdAt DateTime @default(now())
+}

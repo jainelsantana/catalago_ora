@@ -1,8 +1,43 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Catálogo ORA - Admin Dashboard
+
+Este é um sistema de gerenciamento de catálogo desenvolvido com Next.js. A aplicação permite o gerenciamento completo (CRUD) de produtos e categorias, incluindo suporte a upload de múltiplas imagens e controle de estoque.
+
+## Requisitos do Sistema
+
+Antes de começar, certifique-se de ter instalado em sua máquina:
+
+- **Node.js**: Versão 18.17.0 ou superior.
+- **Gerenciador de Pacotes**: npm, yarn, pnpm ou bun.
+
+## Tecnologias Principais
+
+- **Framework**: Next.js 14+ (App Router)
+- **Linguagem**: TypeScript
+- **Validação de Dados**: Zod
+- **Formulários**: React Hook Form
+- **Estado Assíncrono**: TanStack Query (React Query)
+- **Estilização**: Tailwind CSS
+- **Ícones**: Lucide React
+
+## Configuração de Ambiente
+
+Crie um arquivo `.env.local` na raiz do projeto e configure as variáveis necessárias. Embora o projeto utilize APIs internas, certifique-se de configurar as seguintes chaves se houver integração externa (ex: Banco de Dados ou Storage):
+
+```env
+DATABASE_URL="sua_url_do_banco_de_dados"
+NEXTAUTH_SECRET="seu_segredo_para_autenticacao"
+# Configurações de Storage para Imagens (se aplicável)
+NEXT_PUBLIC_UPLOAD_API_URL="/api/upload"
+```
 
 ## Getting Started
 
-First, run the development server:
+1. **Instale as dependências:**
+```bash
+npm install
+```
+
+2. **Inicie o servidor de desenvolvimento:**
 
 ```bash
 npm run dev
@@ -15,6 +50,38 @@ bun dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+
+## Rodando com Docker
+
+1. **Construa a imagem:**
+```bash
+docker build -t catalago-ora .
+```
+
+2. **Execute o container:**
+```bash
+docker run -p 3000:3000 --env-file .env.local catalago-ora
+```
+
+A aplicação estará disponível em `http://localhost:3000`.
+
+## Scripts Disponíveis
+
+- `npm run dev`: Inicia o ambiente de desenvolvimento.
+- `npm run build`: Cria a versão de produção da aplicação.
+- `npm run start`: Inicia o servidor em modo produção.
+- `npm run lint`: Executa a verificação de regras do linter.
+
+## Acesso Administrativo
+
+Para gerenciar o catálogo de produtos e categorias, acesse a área restrita:
+
+- **Link de Acesso:** [http://localhost:3000/admin](http://localhost:3000/admin)
+- **Credenciais de Teste:**
+  - **E-mail:** `admin@exemplo.com`
+  - **Senha:** `admin123` (ou a senha configurada no seu provedor de autenticação)
+
+---
 
 You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 

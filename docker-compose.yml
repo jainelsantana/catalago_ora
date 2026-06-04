@@ -1,0 +1,40 @@
+
+services:
+  app:
+    build: .
+    container_name: catalog-app
+    restart: always
+    ports:
+      - "3000:3000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgresql://postgres:postgres@postgres:5432/catalogdb?schema=public
+      NEXTAUTH_SECRET: supersecretnextauthsecretforcatalogapp12345
+      NEXTAUTH_URL: http://localhost:3000
+    volumes:
+      - uploads_data:/app/public/uploads
+
+  postgres:
+    image: postgres:16
+    container_name: catalog-db
+    restart: always
+    environment:
+      POSTGRES_DB: catalogdb
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d catalogdb"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+
+volumes:
+  postgres_data:
+  uploads_data:
