@@ -1,9 +1,13 @@
 import { prisma } from "@/lib/prisma";
+import { getBannerContent } from "@/lib/banner-settings";
 import { Navbar } from "@/components/navbar";
 import { Banner } from "@/components/banner";
 import { ProductCard } from "@/components/product-card";
+import type { Prisma } from "@prisma/client";
 import Link from "next/link";
-import { Search, FilterX, HelpCircle } from "lucide-react";
+import { Search, FilterX } from "lucide-react";
+
+export const revalidate = 0;
 
 interface PageProps {
   searchParams: Promise<{
@@ -21,9 +25,10 @@ export default async function CatalogPage({ searchParams }: PageProps) {
 
   const currentCategorySlug = resolvedParams.category || "";
   const currentSearch = resolvedParams.search || "";
+  const shouldShowBanner = !currentCategorySlug && !currentSearch && page === 1;
 
   // Build Prisma filter
-  const where: any = {
+  const where: Prisma.ProductWhereInput = {
     status: "ACTIVE",
     deletedAt: null,
   };
@@ -43,7 +48,7 @@ export default async function CatalogPage({ searchParams }: PageProps) {
   }
 
   // Fetch data in parallel
-  const [products, totalProducts, categories] = await Promise.all([
+  const [products, totalProducts, categories, bannerContent] = await Promise.all([
     prisma.product.findMany({
       where,
       include: {
@@ -58,6 +63,7 @@ export default async function CatalogPage({ searchParams }: PageProps) {
     prisma.category.findMany({
       orderBy: { name: "asc" },
     }),
+    shouldShowBanner ? getBannerContent() : Promise.resolve(null),
   ]);
 
   const totalPages = Math.ceil(totalProducts / limit);
@@ -77,7 +83,7 @@ export default async function CatalogPage({ searchParams }: PageProps) {
 
       <main className="flex-1 container mx-auto px-4 py-8 max-w-7xl">
         {/* Only show Banner on homepage first page with no active filters */}
-        {!currentCategorySlug && !currentSearch && page === 1 && <Banner />}
+        {shouldShowBanner && <Banner content={bannerContent ?? undefined} />}
 
         {/* Search & Category Filter Section */}
         <div className="flex flex-col md:flex-row gap-4 items-stretch md:items-center justify-between mb-8 pb-6 border-b border-border">

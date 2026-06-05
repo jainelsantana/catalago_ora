@@ -39,7 +39,8 @@ const productSchema = zod.object({
   images: zod.array(zod.string()).min(1, "Envie pelo menos uma imagem do produto.")
 });
 
-type ProductFormValues = zod.infer<typeof productSchema>;
+type ProductFormInput = zod.input<typeof productSchema>;
+type ProductFormValues = zod.output<typeof productSchema>;
 
 interface Category {
   id: string;
@@ -85,7 +86,7 @@ export function ProductsClient() {
     reset,
     register: registerField, // Para registro manual de campos customizados
     formState: { errors, isSubmitting }
-  } = useForm<ProductFormValues & { createdBy?: string }>({
+  } = useForm<ProductFormInput, unknown, ProductFormValues>({
     resolver: zodResolver(productSchema),
     defaultValues: {
       name: "",

@@ -1,5 +1,11 @@
 node_modules
 .next
 .git
+.env
+.env.*
+!.env.example
 .env.local
 npm-debug.log
+Dockerfile
+docker-compose.yml
+catalago_ora

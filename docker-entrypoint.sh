@@ -1,11 +1,15 @@
 #!/bin/sh
 set -e
 
-echo "▶ Applying database schema..."
-./node_modules/.bin/prisma db push
+if [ "${SKIP_DB_PUSH:-0}" != "1" ]; then
+  echo "▶ Applying database schema..."
+  ./node_modules/.bin/prisma db push
+fi
 
-echo "▶ Seeding database..."
-node prisma/seed.js || echo "⚠ Seed skipped."
+if [ "${SKIP_DB_SEED:-0}" != "1" ]; then
+  echo "▶ Seeding database..."
+  ./node_modules/.bin/prisma db seed || echo "⚠ Seed skipped."
+fi
 
 echo "✅ Starting Next.js server..."
-exec node server.js
+exec "$@"

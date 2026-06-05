@@ -1,12 +1,13 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { signOut } from "next-auth/react";
 import { ThemeToggle } from "@/components/theme-toggle";
 import {
   LayoutDashboard,
   FolderTree,
+  Image,
   Package,
   LogOut,
   Store,
@@ -18,7 +19,6 @@ import { useState } from "react";
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
-  const router = useRouter();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const menuItems = [
@@ -36,6 +36,11 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       name: "Categorias",
       href: "/admin/dashboard/categorias",
       icon: FolderTree
+    },
+    {
+      name: "Banner",
+      href: "/admin/dashboard/banner",
+      icon: Image
     }
   ];
 

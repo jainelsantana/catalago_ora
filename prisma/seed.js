@@ -1,7 +1,17 @@
+/* eslint-disable @typescript-eslint/no-require-imports */
+
 const { PrismaClient } = require("@prisma/client");
 const bcrypt = require("bcryptjs");
 
 const prisma = new PrismaClient();
+
+const bannerSettingsId = "homepage-banner";
+const defaultBannerSettings = {
+  bannerEyebrow: "Novidades Exclusivas",
+  bannerTitle: "Explore Nossos Melhores Produtos",
+  bannerDescription:
+    "Encontre uma seleção especial de eletrônicos, vestuário, móveis e acessórios de alta performance. Qualidade garantida com atendimento premium.",
+};
 
 async function main() {
   const adminEmail = "admin@catalog.com";
@@ -42,6 +52,39 @@ async function main() {
     });
   }
   console.log("Default categories seeded successfully!");
+
+  await prisma.$executeRaw`
+    CREATE TABLE IF NOT EXISTS "SiteSettings" (
+      "id" TEXT NOT NULL,
+      "bannerEyebrow" TEXT NOT NULL DEFAULT 'Novidades Exclusivas',
+      "bannerTitle" TEXT NOT NULL DEFAULT 'Explore Nossos Melhores Produtos',
+      "bannerDescription" TEXT NOT NULL DEFAULT 'Encontre uma seleção especial de eletrônicos, vestuário, móveis e acessórios de alta performance. Qualidade garantida com atendimento premium.',
+      "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+      "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+      CONSTRAINT "SiteSettings_pkey" PRIMARY KEY ("id")
+    )
+  `;
+
+  await prisma.$executeRaw`
+    INSERT INTO "SiteSettings" (
+      "id",
+      "bannerEyebrow",
+      "bannerTitle",
+      "bannerDescription",
+      "createdAt",
+      "updatedAt"
+    )
+    VALUES (
+      ${bannerSettingsId},
+      ${defaultBannerSettings.bannerEyebrow},
+      ${defaultBannerSettings.bannerTitle},
+      ${defaultBannerSettings.bannerDescription},
+      CURRENT_TIMESTAMP,
+      CURRENT_TIMESTAMP
+    )
+    ON CONFLICT ("id") DO NOTHING
+  `;
+  console.log("Default banner settings seeded successfully!");
 }
 
 main()

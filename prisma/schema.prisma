@@ -66,3 +66,12 @@ model AuditLog {
   user      User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
   createdAt DateTime @default(now())
 }
+
+model SiteSettings {
+  id                String   @id
+  bannerEyebrow     String   @default("Novidades Exclusivas")
+  bannerTitle       String   @default("Explore Nossos Melhores Produtos")
+  bannerDescription String   @default("Encontre uma seleção especial de eletrônicos, vestuário, móveis e acessórios de alta performance. Qualidade garantida com atendimento premium.")
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
