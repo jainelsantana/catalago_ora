@@ -61,7 +61,9 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         {/* Navigation links */}
         <nav className="flex-1 px-4 py-6 space-y-1.5">
           {menuItems.map((item) => {
-            const isActive = pathname === item.href;
+            const isActive = item.href === "/admin/dashboard" 
+              ? pathname === item.href 
+              : pathname.startsWith(item.href);
             return (
               <Link
                 key={item.href}
@@ -127,7 +129,9 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           <div className="md:hidden fixed inset-0 top-16 z-30 bg-background/95 backdrop-blur-sm border-b border-border flex flex-col">
             <nav className="flex-1 px-6 py-6 space-y-2">
               {menuItems.map((item) => {
-                const isActive = pathname === item.href;
+              const isActive = item.href === "/admin/dashboard" 
+                ? pathname === item.href 
+                : pathname.startsWith(item.href);
                 return (
                   <Link
                     key={item.href}

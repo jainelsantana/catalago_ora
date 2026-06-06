@@ -1,55 +1,41 @@
-# Estágio 1: Instalação de dependências
-FROM node:22-alpine AS deps
+FROM node:18-alpine AS base
+
+# 1. Instalar dependências apenas quando necessário
+FROM base AS deps
+RUN apk add --no-cache libc6-compat
 WORKDIR /app
-
-RUN apk add --no-cache libc6-compat openssl
-
-COPY package.json package-lock.json ./
-COPY prisma ./prisma
+COPY package.json package-lock.json* ./
 RUN npm ci
 
-# Estágio 2: Build da aplicação
-FROM node:22-alpine AS builder
+# 2. Reconstruir o código-fonte
+FROM base AS builder
 WORKDIR /app
-
-RUN apk add --no-cache libc6-compat openssl
-
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
-
-# Desabilita a telemetria do Next.js durante o build
 ENV NEXT_TELEMETRY_DISABLED 1
-
-RUN npx prisma generate
 RUN npm run build
 
-# Estágio 3: Runner (Ambiente de execução)
-FROM node:22-alpine AS runner
+# 3. Imagem de produção
+FROM base AS runner
 WORKDIR /app
 
 ENV NODE_ENV production
 ENV NEXT_TELEMETRY_DISABLED 1
-ENV HOSTNAME 0.0.0.0
 
-# Cria um usuário para rodar a aplicação por segurança
-RUN apk add --no-cache libc6-compat openssl
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
 
+COPY --from=builder /app/public ./public
+
+# Define as permissões para o cache do Next.js
+RUN mkdir .next
+RUN chown nextjs:nodejs .next
+
+# Copia o build standalone (exige output: 'standalone' no next.config.js)
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
-COPY --from=builder --chown=nextjs:nodejs /app/public ./public
-COPY --from=builder --chown=nextjs:nodejs /app/prisma ./prisma
-COPY --from=builder --chown=nextjs:nodejs /app/package.json ./package.json
-COPY --from=deps --chown=nextjs:nodejs /app/node_modules ./node_modules
-COPY --chown=nextjs:nodejs docker-entrypoint.sh ./docker-entrypoint.sh
-
-RUN chmod +x ./docker-entrypoint.sh && mkdir -p ./public/uploads && chown -R nextjs:nodejs ./public/uploads
 
 USER nextjs
-
 EXPOSE 3000
 ENV PORT 3000
-
-ENTRYPOINT ["./docker-entrypoint.sh"]
 CMD ["node", "server.js"]
