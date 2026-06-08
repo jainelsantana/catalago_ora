@@ -31,7 +31,7 @@ export async function generateMetadata({ params }: ProductPageProps): Promise<Me
   }
 
   const primaryImage = product.images[0]?.url;
-  const baseUrl = process.env.NEXTAUTH_URL || "http://localhost:3000";
+  const baseUrl = process.env.NEXTAUTH_URL || "http://localhost:3007";
 
   return {
     title: `${product.name} | Premium Catalog`,
@@ -60,7 +60,7 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
     notFound();
   }
 
-  const baseUrl = process.env.NEXTAUTH_URL || "http://localhost:3000";
+  const baseUrl = process.env.NEXTAUTH_URL || "http://localhost:3007";
   const productUrl = `${baseUrl}/produto/${product.slug}`;
   
   // Prefilled WhatsApp link

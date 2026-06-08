@@ -37,12 +37,12 @@ services:
       migrate:
         condition: service_completed_successfully
     ports:
-      - "3000:3000"
+      - "3007:3007"
     environment:
       - NODE_ENV=production
       - DATABASE_URL=postgresql://postgres:postgres@db:5432/catalogdb?schema=public
       - NEXTAUTH_SECRET=${NEXTAUTH_SECRET:-supersecretlocal}
-      - NEXTAUTH_URL=${NEXTAUTH_URL:-http://localhost:3000}
+      - NEXTAUTH_URL=${NEXTAUTH_URL:-http://localhost:3007}
     volumes:
       - uploads_data:/app/public/uploads
     restart: always

@@ -26,7 +26,7 @@ Crie um arquivo `.env.local` na raiz do projeto e configure as variáveis necess
 ```env
 DATABASE_URL="sua_url_do_banco_de_dados"
 NEXTAUTH_SECRET="seu_segredo_para_autenticacao"
-NEXTAUTH_URL="http://localhost:3000"
+NEXTAUTH_URL="http://localhost:3007"
 # Configurações de Storage para Imagens (se aplicável)
 NEXT_PUBLIC_UPLOAD_API_URL="/api/upload"
 ```
@@ -50,7 +50,7 @@ pnpm dev
 bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3007](http://localhost:3007) with your browser to see the result.
 
 ## Rodando com Docker
 
@@ -60,7 +60,7 @@ docker compose up -d --build
 ```
 
 2. **Acesse a aplicação:**
-Abra [http://localhost:3000](http://localhost:3000) no navegador.
+Abra [http://localhost:3007](http://localhost:3007) no navegador.
 
 3. **Veja os logs:**
 ```bash
@@ -83,7 +83,7 @@ docker compose down
 
 Para gerenciar o catálogo de produtos e categorias, acesse a área restrita:
 
-- **Link de Acesso:** [http://localhost:3000/admin](http://localhost:3000/admin)
+- **Link de Acesso:** [http://localhost:3007/admin](http://localhost:3007/admin)
 - **Credenciais de Teste:**
   - **E-mail:** `admin@catalog.com`
   - **Senha:** `admin123` (ou a senha configurada no seu provedor de autenticação)

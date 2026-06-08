@@ -8,11 +8,12 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Premium Catalog | Catálogo de Produtos",
     description: "Descubra nossa linha exclusiva de produtos de alta qualidade e gerencie com facilidade.",
-    url: "http://localhost:3000",
+    url: "http://localhost:3007",
     siteName: "Premium Catalog",
     images: [
       {
-        url: "http://localhost:3000/og-image.jpg",
+        url: "http://localhost:3007/og-image.jpg",
+        url: "http://localhost:3007/og-image.jpg",
         width: 1200,
         height: 630,
         alt: "Premium Catalog Banner",
