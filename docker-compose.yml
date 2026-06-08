@@ -7,14 +7,15 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
       - POSTGRES_DB=catalogdb
+      - POSTGRES_INITDB_ARGS=-c max_connections=200
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres -d catalogdb"]
-      interval: 3s
+      interval: 2s
       timeout: 10s
-      retries: 10
-      start_period: 10s
+      retries: 30
+      start_period: 20s
     restart: always
     networks:
       - app-network
