@@ -12,7 +12,7 @@ services:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres -d catalogdb"]
-      interval: 2s
+      interval: 5s
       timeout: 10s
       retries: 30
       start_period: 20s
@@ -40,8 +40,6 @@ services:
       context: .
       dockerfile: Dockerfile
     depends_on:
-      db:
-        condition: service_healthy
       migrate:
         condition: service_completed_successfully
     ports:
