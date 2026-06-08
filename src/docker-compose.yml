@@ -1,0 +1,41 @@
+version: '3.8'
+
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000" # Mapeia a porta 3000 do host para a porta 3000 do container
+    env_file:
+      - .env # Carrega variáveis de ambiente do arquivo .env
+    depends_on:
+      db:
+        condition: service_healthy # Garante que 'web' só inicia após 'db' estar saudável
+    networks:
+      - app-network
+
+  db:
+    image: postgres:16-alpine # Imagem oficial do PostgreSQL
+    restart: always # Reinicia o container se ele parar
+    volumes:
+      - postgres_data:/var/lib/postgresql/data # Persiste os dados do banco
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    healthcheck: # Adiciona uma verificação de saúde para o banco de dados
+      test: [ "CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 10s # Espera 10s antes de começar a verificar
+    networks:
+      - app-network
+
+volumes:
+  postgres_data: # Volume para persistir os dados do PostgreSQL
+
+networks:
+  app-network:
+    driver: bridge
