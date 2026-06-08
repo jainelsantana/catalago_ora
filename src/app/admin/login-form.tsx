@@ -1,17 +1,24 @@
 "use client";
 
 import { signIn } from "next-auth/react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { Shield, Lock, Mail, Loader2, ArrowRight } from "lucide-react";
 import Link from "next/link";
 
 export function LoginForm() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+
+  const callbackUrl = searchParams.get("callbackUrl");
+  const safeCallbackUrl =
+    callbackUrl?.startsWith("/") && !callbackUrl.startsWith("//")
+      ? callbackUrl
+      : "/admin/dashboard";
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -29,7 +36,7 @@ export function LoginForm() {
         // Map common errors or show direct message
         setError(result.error || "E-mail ou senha inválidos.");
       } else {
-        router.push("/admin/dashboard");
+        router.push(safeCallbackUrl);
         router.refresh();
       }
     } catch (err) {
