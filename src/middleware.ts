@@ -5,14 +5,14 @@ export default withAuth({
     authorized: ({ token }) => token?.role === "ADMIN",
   },
   pages: {
-    signIn: "/admin",
+    // Redireciona para a página de login se o usuário não estiver autorizado
+    signIn: "/login",
   },
 });
 
 export const config = {
   matcher: [
-    "/admin/dashboard/:path*",
-    "/admin/produtos/:path*",
-    "/admin/categorias/:path*",
+    // Protege todas as rotas dentro de /admin, exceto a própria página de login
+    "/admin/:path*",
   ],
 };
