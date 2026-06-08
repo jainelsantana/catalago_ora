@@ -11,10 +11,13 @@ services:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres -d catalogdb"]
-      interval: 5s
-      timeout: 5s
-      retries: 5
+      interval: 3s
+      timeout: 10s
+      retries: 10
+      start_period: 10s
     restart: always
+    networks:
+      - app-network
 
   migrate:
     build:
@@ -28,12 +31,16 @@ services:
       - DATABASE_URL=postgresql://postgres:postgres@db:5432/catalogdb?schema=public
     command: ["sh", "-c", "npx prisma db push && npx prisma db seed"]
     restart: "no"
+    networks:
+      - app-network
 
   web:
     build:
       context: .
       dockerfile: Dockerfile
     depends_on:
+      db:
+        condition: service_healthy
       migrate:
         condition: service_completed_successfully
     ports:
@@ -46,7 +53,13 @@ services:
     volumes:
       - uploads_data:/app/public/uploads
     restart: always
+    networks:
+      - app-network
 
 volumes:
   postgres_data:
   uploads_data:
+
+networks:
+  app-network:
+    driver: bridge
