@@ -3,11 +3,25 @@ import { getBannerContent } from "@/lib/banner-settings";
 import { Navbar } from "@/components/navbar";
 import { Banner } from "@/components/banner";
 import { ProductCard } from "@/components/product-card";
-import type { Prisma } from "@prisma/client";
+import type { Category, Prisma } from "@prisma/client";
 import Link from "next/link";
 import { Search, FilterX } from "lucide-react";
 
 export const revalidate = 0;
+
+type CatalogProduct = Prisma.ProductGetPayload<{
+  include: {
+    category: true;
+    images: true;
+  };
+}>;
+
+interface CatalogData {
+  products: CatalogProduct[];
+  totalProducts: number;
+  categories: Category[];
+  bannerContent: Awaited<ReturnType<typeof getBannerContent>> | null;
+}
 
 interface PageProps {
   searchParams: Promise<{
@@ -15,6 +29,54 @@ interface PageProps {
     category?: string;
     search?: string;
   }>;
+}
+
+async function loadCatalogData({
+  where,
+  skip,
+  limit,
+  shouldShowBanner,
+}: {
+  where: Prisma.ProductWhereInput;
+  skip: number;
+  limit: number;
+  shouldShowBanner: boolean;
+}): Promise<CatalogData> {
+  try {
+    const [products, totalProducts, categories, bannerContent] = await Promise.all([
+      prisma.product.findMany({
+        where,
+        include: {
+          category: true,
+          images: { orderBy: { createdAt: "asc" } },
+        },
+        orderBy: { createdAt: "desc" },
+        skip,
+        take: limit,
+      }),
+      prisma.product.count({ where }),
+      prisma.category.findMany({
+        orderBy: { name: "asc" },
+      }),
+      shouldShowBanner ? getBannerContent() : Promise.resolve(null),
+    ]);
+
+    return {
+      products,
+      totalProducts,
+      categories,
+      bannerContent,
+    };
+  } catch (error) {
+    console.error("Error loading catalog data:", error);
+
+    return {
+      products: [],
+      totalProducts: 0,
+      categories: [],
+      bannerContent: shouldShowBanner ? await getBannerContent() : null,
+    };
+  }
 }
 
 export default async function CatalogPage({ searchParams }: PageProps) {
@@ -47,24 +109,12 @@ export default async function CatalogPage({ searchParams }: PageProps) {
     ];
   }
 
-  // Fetch data in parallel
-  const [products, totalProducts, categories, bannerContent] = await Promise.all([
-    prisma.product.findMany({
-      where,
-      include: {
-        category: true,
-        images: { orderBy: { createdAt: "asc" } },
-      },
-      orderBy: { createdAt: "desc" },
-      skip,
-      take: limit,
-    }),
-    prisma.product.count({ where }),
-    prisma.category.findMany({
-      orderBy: { name: "asc" },
-    }),
-    shouldShowBanner ? getBannerContent() : Promise.resolve(null),
-  ]);
+  const { products, totalProducts, categories, bannerContent } = await loadCatalogData({
+    where,
+    skip,
+    limit,
+    shouldShowBanner,
+  });
 
   const totalPages = Math.ceil(totalProducts / limit);
 

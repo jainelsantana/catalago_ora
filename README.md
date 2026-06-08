@@ -21,14 +21,22 @@ Antes de começar, certifique-se de ter instalado em sua máquina:
 
 ## Configuração de Ambiente
 
-Crie um arquivo `.env.local` na raiz do projeto e configure as variáveis necessárias. Embora o projeto utilize APIs internas, certifique-se de configurar as seguintes chaves se houver integração externa (ex: Banco de Dados ou Storage):
+Crie um arquivo `.env` na raiz do projeto e configure as variáveis necessárias. Para Docker Compose, use o host `db` porque o Next.js roda na mesma rede do Postgres:
 
 ```env
-DATABASE_URL="sua_url_do_banco_de_dados"
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=postgres
+POSTGRES_DB=catalogdb
+DATABASE_URL="postgresql://postgres:postgres@db:5432/catalogdb?schema=public"
 NEXTAUTH_SECRET="seu_segredo_para_autenticacao"
 NEXTAUTH_URL="http://localhost:3007"
-# Configurações de Storage para Imagens (se aplicável)
 NEXT_PUBLIC_UPLOAD_API_URL="/api/upload"
+```
+
+Se rodar `npm run dev` direto na máquina, troque apenas o host da URL para `localhost`:
+
+```env
+DATABASE_URL="postgresql://postgres:postgres@localhost:5432/catalogdb?schema=public"
 ```
 
 ## Getting Started
@@ -53,6 +61,12 @@ bun dev
 Open [http://localhost:3007](http://localhost:3007) with your browser to see the result.
 
 ## Rodando com Docker
+
+Antes de subir, confirme que o Docker Desktop não está pausado. Se aparecer erro como `Can't reach database server at db:5432`, abra o Docker Desktop e use **Resume/Restart**, ou rode:
+
+```bash
+docker desktop restart
+```
 
 1. **Suba a aplicação, o banco e o seed inicial:**
 ```bash
