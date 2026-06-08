@@ -1,10 +1,25 @@
 import { PrismaClient } from "@prisma/client";
-import { existsSync } from "fs";
 
 const globalForPrisma = global as unknown as { prisma: PrismaClient };
 
-function isDockerRuntime() {
-  return process.env.RUNNING_IN_DOCKER === "true" || existsSync("/.dockerenv");
+function shouldUseComposeDatabaseHost() {
+  return process.env.RUNNING_IN_DOCKER === "true";
+}
+
+function getDatabaseFallbackHost() {
+  if (process.env.DATABASE_FALLBACK_HOST) {
+    return process.env.DATABASE_FALLBACK_HOST;
+  }
+
+  if (process.env.NEXTAUTH_URL) {
+    try {
+      return new URL(process.env.NEXTAUTH_URL).hostname;
+    } catch {
+      return "localhost";
+    }
+  }
+
+  return "localhost";
 }
 
 function getRuntimeDatabaseUrl() {
@@ -14,10 +29,10 @@ function getRuntimeDatabaseUrl() {
   try {
     const parsedUrl = new URL(databaseUrl);
 
-    // `db` only resolves inside Docker Compose. Outside Docker, the mapped
-    // Postgres port is reached through localhost.
-    if (parsedUrl.hostname === "db" && !isDockerRuntime()) {
-      parsedUrl.hostname = "localhost";
+    // `db` only resolves inside Docker Compose. Deployments that run the app
+    // outside that Compose network must use the host that exposes Postgres.
+    if (parsedUrl.hostname === "db" && !shouldUseComposeDatabaseHost()) {
+      parsedUrl.hostname = getDatabaseFallbackHost();
       const rewrittenUrl = parsedUrl.toString();
       process.env.DATABASE_URL = rewrittenUrl;
       return rewrittenUrl;

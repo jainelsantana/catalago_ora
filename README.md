@@ -41,6 +41,12 @@ DATABASE_URL="postgresql://postgres:postgres@localhost:5432/catalogdb?schema=pub
 
 Em produção fora do Docker Compose, use `localhost` ou o IP real do Postgres. O host `db` só existe para containers na rede do Compose.
 
+Se o deploy mantiver `DATABASE_URL` com `@db:5432`, defina também o host real do Postgres:
+
+```env
+DATABASE_FALLBACK_HOST=catalogo.ora.dev.br
+```
+
 ## Getting Started
 
 1. **Instale as dependências:**
