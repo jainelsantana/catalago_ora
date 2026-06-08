@@ -6,7 +6,7 @@ Este é um sistema de gerenciamento de catálogo desenvolvido com Next.js. A apl
 
 Antes de começar, certifique-se de ter instalado em sua máquina:
 
-- **Node.js**: Versão 18.17.0 ou superior.
+- **Node.js**: Versão 20.9.0 ou superior.
 - **Gerenciador de Pacotes**: npm, yarn, pnpm ou bun.
 
 ## Tecnologias Principais
@@ -53,17 +53,23 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 ## Rodando com Docker
 
-1. **Construa a imagem:**
+1. **Suba a aplicação, o banco e o seed inicial:**
 ```bash
-docker build -t catalago-ora .
+docker compose up -d --build
 ```
 
-2. **Execute o container:**
+2. **Acesse a aplicação:**
+Abra [http://localhost:3000](http://localhost:3000) no navegador.
+
+3. **Veja os logs:**
 ```bash
-docker run -p 3000:3000 --env-file .env.local catalago-ora
+docker compose logs -f web
 ```
 
-A aplicação estará disponível em `http://localhost:3000`.
+4. **Pare os containers:**
+```bash
+docker compose down
+```
 
 ## Scripts Disponíveis
 
@@ -78,7 +84,7 @@ Para gerenciar o catálogo de produtos e categorias, acesse a área restrita:
 
 - **Link de Acesso:** [http://localhost:3000/admin](http://localhost:3000/admin)
 - **Credenciais de Teste:**
-  - **E-mail:** `admin@exemplo.com`
+  - **E-mail:** `admin@catalog.com`
   - **Senha:** `admin123` (ou a senha configurada no seu provedor de autenticação)
 
 ---

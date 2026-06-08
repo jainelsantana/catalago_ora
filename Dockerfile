@@ -1,8 +1,8 @@
-FROM node:18-alpine AS base
+FROM node:22-alpine AS base
+RUN apk add --no-cache libc6-compat openssl
 
 # 1. Instalar dependências apenas quando necessário
 FROM base AS deps
-RUN apk add --no-cache libc6-compat
 WORKDIR /app
 COPY package.json package-lock.json* ./
 RUN npm ci
@@ -13,6 +13,9 @@ WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 ENV NEXT_TELEMETRY_DISABLED 1
+# Used only during image build; runtime uses docker-compose.yml.
+ENV DATABASE_URL="postgresql://postgres:postgres@localhost:5432/catalogdb?schema=public"
+RUN npx prisma generate
 RUN npm run build
 
 # 3. Imagem de produção
@@ -27,9 +30,9 @@ RUN adduser --system --uid 1001 nextjs
 
 COPY --from=builder /app/public ./public
 
-# Define as permissões para o cache do Next.js
-RUN mkdir .next
-RUN chown nextjs:nodejs .next
+# Define as permissões para o cache do Next.js e uploads.
+RUN mkdir -p .next public/uploads
+RUN chown -R nextjs:nodejs .next public/uploads
 
 # Copia o build standalone (exige output: 'standalone' no next.config.js)
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
