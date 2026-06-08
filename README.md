@@ -26,6 +26,7 @@ Crie um arquivo `.env.local` na raiz do projeto e configure as variáveis necess
 ```env
 DATABASE_URL="sua_url_do_banco_de_dados"
 NEXTAUTH_SECRET="seu_segredo_para_autenticacao"
+NEXTAUTH_URL="http://localhost:3000"
 # Configurações de Storage para Imagens (se aplicável)
 NEXT_PUBLIC_UPLOAD_API_URL="/api/upload"
 ```

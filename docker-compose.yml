@@ -41,8 +41,8 @@ services:
     environment:
       - NODE_ENV=production
       - DATABASE_URL=postgresql://postgres:postgres@db:5432/catalogdb?schema=public
-      - NEXTAUTH_SECRET=${NEXTAUTH_SECRET}
-      - NEXTAUTH_URL=${NEXTAUTH_URL}
+      - NEXTAUTH_SECRET=${NEXTAUTH_SECRET:-supersecretlocal}
+      - NEXTAUTH_URL=${NEXTAUTH_URL:-http://localhost:3000}
     volumes:
       - uploads_data:/app/public/uploads
     restart: always
