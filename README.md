@@ -39,6 +39,8 @@ Se rodar `npm run dev` direto na máquina, troque apenas o host da URL para `loc
 DATABASE_URL="postgresql://postgres:postgres@localhost:5432/catalogdb?schema=public"
 ```
 
+Em produção fora do Docker Compose, use `localhost` ou o IP real do Postgres. O host `db` só existe para containers na rede do Compose.
+
 ## Getting Started
 
 1. **Instale as dependências:**

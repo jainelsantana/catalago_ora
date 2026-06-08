@@ -45,6 +45,8 @@ services:
       - "${WEB_PORT:-3007}:3007"
     env_file:
       - .env
+    environment:
+      - RUNNING_IN_DOCKER=true
     volumes:
       - uploads_data:/app/public/uploads
     restart: always

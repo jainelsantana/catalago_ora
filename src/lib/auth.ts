@@ -16,9 +16,15 @@ export const authOptions: AuthOptions = {
           throw new Error("E-mail e senha são obrigatórios.");
         }
 
-        const user = await prisma.user.findUnique({
-          where: { email: credentials.email },
-        });
+        let user;
+        try {
+          user = await prisma.user.findUnique({
+            where: { email: credentials.email },
+          });
+        } catch (error) {
+          console.error("Authentication database error:", error);
+          throw new Error("Não foi possível conectar ao banco de dados. Verifique a configuração do servidor.");
+        }
 
         if (!user) {
           throw new Error("Usuário não encontrado.");
