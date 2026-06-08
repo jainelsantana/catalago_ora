@@ -18,8 +18,17 @@ interface ProductCardProps {
   };
 }
 
+const normalizeImageUrl = (url: string) => {
+  const trimmed = url?.trim();
+  if (!trimmed) return "";
+  if (/^https?:\/\//i.test(trimmed) || trimmed.startsWith("/")) {
+    return trimmed;
+  }
+  return `/${trimmed}`;
+};
+
 export function ProductCard({ product }: ProductCardProps) {
-  const primaryImage = product.images[0]?.url;
+  const primaryImage = normalizeImageUrl(product.images[0]?.url || "");
 
   return (
     <Link href={`/produto/${product.slug}`} className="group block">

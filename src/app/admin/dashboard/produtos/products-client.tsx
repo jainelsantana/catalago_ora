@@ -39,6 +39,41 @@ const productSchema = zod.object({
   images: zod.array(zod.string()).min(1, "Envie pelo menos uma imagem do produto.")
 });
 
+/**
+ * Componente para exibição segura de imagens com tratamento de erro
+ */
+const normalizeImageUrl = (url: string | undefined) => {
+  const trimmed = url?.trim();
+  if (!trimmed) return "";
+  if (/^https?:\/\//i.test(trimmed) || trimmed.startsWith("/")) {
+    return trimmed;
+  }
+  return `/${trimmed}`;
+};
+
+function ProductImageDisplay({ src, alt, className }: { src?: string; alt: string; className?: string }) {
+  const [hasError, setHasError] = useState(false);
+  const normalizedSrc = normalizeImageUrl(src);
+
+  if (hasError || !normalizedSrc) {
+    return (
+      <div className={`flex flex-col items-center justify-center bg-muted/50 border border-border/50 text-muted-foreground ${className}`} role="img" aria-label="Imagem indisponível">
+        <EyeOff className="h-2/5 w-2/5 opacity-40" />
+        <span className="text-[8px] font-bold uppercase tracking-tighter mt-1 opacity-60">Indisponível</span>
+      </div>
+    );
+  }
+
+  return (
+    <img
+      src={normalizedSrc}
+      alt={alt}
+      className={`${className} animate-in fade-in duration-500`}
+      onError={() => setHasError(true)}
+    />
+  );
+}
+
 type ProductFormInput = zod.input<typeof productSchema>;
 type ProductFormValues = zod.output<typeof productSchema>;
 
@@ -403,15 +438,11 @@ export function ProductsClient() {
                     <td className="px-6 py-4 font-semibold text-foreground">
                       <div className="flex items-center gap-3">
                         <div className="w-10 h-10 rounded bg-muted border border-border overflow-hidden flex items-center justify-center flex-shrink-0">
-                          {prod.images[0]?.url ? (
-                            <img
-                              src={prod.images[0].url}
-                              alt={prod.name}
-                              className="w-full h-full object-cover"
-                            />
-                          ) : (
-                            <Package className="h-5 w-5 text-muted-foreground" />
-                          )}
+                          <ProductImageDisplay 
+                            src={prod.images[0]?.url} 
+                            alt={prod.name} 
+                            className="w-full h-full object-cover" 
+                          />
                         </div>
                         <div>
                           <div className="font-bold text-foreground line-clamp-1">{prod.name}</div>

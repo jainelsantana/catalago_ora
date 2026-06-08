@@ -11,6 +11,15 @@ interface ProductGalleryProps {
   productName: string;
 }
 
+const normalizeImageUrl = (url: string) => {
+  const trimmed = url?.trim();
+  if (!trimmed) return "";
+  if (/^https?:\/\//i.test(trimmed) || trimmed.startsWith("/")) {
+    return trimmed;
+  }
+  return `/${trimmed}`;
+};
+
 export function ProductGallery({ images, productName }: ProductGalleryProps) {
   const [activeImageIndex, setActiveImageIndex] = useState(0);
 
@@ -24,13 +33,14 @@ export function ProductGallery({ images, productName }: ProductGalleryProps) {
   }
 
   const activeImage = images[activeImageIndex];
+  const activeImageUrl = normalizeImageUrl(activeImage.url);
 
   return (
     <div className="flex flex-col gap-4">
       {/* Main Image View */}
       <div className="relative aspect-square w-full rounded-2xl bg-muted border border-border overflow-hidden flex items-center justify-center">
         <img
-          src={activeImage.url}
+          src={activeImageUrl}
           alt={`${productName} - Imagem ${activeImageIndex + 1}`}
           className="h-full w-full object-cover transition-all duration-300"
         />
@@ -52,7 +62,7 @@ export function ProductGallery({ images, productName }: ProductGalleryProps) {
                 }`}
               >
                 <img
-                  src={img.url}
+                  src={normalizeImageUrl(img.url)}
                   alt={`${productName} thumbnail ${index + 1}`}
                   className="h-full w-full object-cover"
                 />

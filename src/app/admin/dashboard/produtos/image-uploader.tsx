@@ -1,16 +1,34 @@
 "use client";
 
 import { useState, useRef, DragEvent } from "react";
-import { UploadCloud, X, Loader2, Image as ImageIcon } from "lucide-react";
+import { UploadCloud, X, Loader2 } from "lucide-react";
 
 interface ImageUploaderProps {
   value: string[]; // List of already uploaded image urls
   onChange: (urls: string[]) => void;
 }
 
+const normalizeImageUrl = (url: string) => {
+  const trimmed = url?.trim();
+  if (!trimmed) return "";
+  if (/^https?:\/\//i.test(trimmed) || trimmed.startsWith("/") || trimmed.startsWith("blob:") || trimmed.startsWith("data:")) {
+    return trimmed;
+  }
+  return `/${trimmed}`;
+};
+
+const readFileAsDataUrl = (file: File): Promise<string> =>
+  new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result as string);
+    reader.onerror = () => reject(new Error("Falha ao ler arquivo."));
+    reader.readAsDataURL(file);
+  });
+
 export function ImageUploader({ value = [], onChange }: ImageUploaderProps) {
   const [loading, setLoading] = useState(false);
   const [dragActive, setDragActive] = useState(false);
+  const [previewUrls, setPreviewUrls] = useState<string[]>([]);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Canvas compression helper
@@ -79,11 +97,15 @@ export function ImageUploader({ value = [], onChange }: ImageUploaderProps) {
 
   const uploadFiles = async (files: FileList) => {
     setLoading(true);
+    const fileArray = Array.from(files);
+    const selectedPreviewUrls = await Promise.all(fileArray.map(readFileAsDataUrl));
+    setPreviewUrls((prev) => [...prev, ...selectedPreviewUrls]);
+
     try {
       const formData = new FormData();
       
-      for (let i = 0; i < files.length; i++) {
-        const compressedFile = await compressImage(files[i]);
+      for (let i = 0; i < fileArray.length; i++) {
+        const compressedFile = await compressImage(fileArray[i]);
         formData.append("files", compressedFile);
       }
 
@@ -93,16 +115,18 @@ export function ImageUploader({ value = [], onChange }: ImageUploaderProps) {
       });
 
       if (!res.ok) {
-        throw new Error("Erro ao enviar imagens.");
+        const data = await res.json().catch(() => null);
+        throw new Error(data?.error ?? "Erro ao enviar imagens.");
       }
 
       const data = await res.json();
       onChange([...value, ...data.urls]);
     } catch (error) {
-      alert("Falha no upload das imagens. Verifique se o tamanho é aceitável.");
+      alert(error instanceof Error ? error.message : "Falha no upload das imagens.");
       console.error(error);
     } finally {
       setLoading(false);
+      setPreviewUrls([]);
     }
   };
 
@@ -132,7 +156,13 @@ export function ImageUploader({ value = [], onChange }: ImageUploaderProps) {
   };
 
   const handleRemoveImage = (indexToRemove: number) => {
-    onChange(value.filter((_, idx) => idx !== indexToRemove));
+    if (indexToRemove < value.length) {
+      onChange(value.filter((_, idx) => idx !== indexToRemove));
+      return;
+    }
+
+    const previewIndex = indexToRemove - value.length;
+    setPreviewUrls((prev) => prev.filter((_, idx) => idx !== previewIndex));
   };
 
   const triggerInput = () => {
@@ -186,40 +216,49 @@ export function ImageUploader({ value = [], onChange }: ImageUploaderProps) {
       </div>
 
       {/* Preview list */}
-      {value.length > 0 && (
+      {value.length + previewUrls.length > 0 && (
         <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-5 gap-3 mt-4">
-          {value.map((url, idx) => (
-            <div
-              key={idx}
-              className="group relative aspect-square rounded-lg bg-muted border border-border overflow-hidden flex items-center justify-center shadow-xs"
-            >
-              <img
-                src={url}
-                alt={`Uploaded image ${idx + 1}`}
-                className="h-full w-full object-cover"
-              />
-              {/* Overlay and Delete Button */}
-              <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center">
-                <button
-                  type="button"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handleRemoveImage(idx);
-                  }}
-                  className="p-1.5 rounded-full bg-destructive text-white hover:scale-105 transition-transform cursor-pointer"
-                  title="Remover Imagem"
-                >
-                  <X className="h-4 w-4" />
-                </button>
+          {[...value, ...previewUrls].map((url, idx) => {
+            const isPreview = idx >= value.length;
+            return (
+              <div
+                key={`${isPreview ? "preview" : "uploaded"}-${idx}-${url}`}
+                className="group relative aspect-square rounded-lg bg-muted border border-border overflow-hidden flex items-center justify-center shadow-xs"
+              >
+                <img
+                  src={normalizeImageUrl(url)}
+                  alt={isPreview ? `Preview image ${idx + 1}` : `Uploaded image ${idx + 1}`}
+                  className="h-full w-full object-cover"
+                />
+                {/* Overlay and Delete Button */}
+                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center">
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleRemoveImage(idx);
+                    }}
+                    className="p-1.5 rounded-full bg-destructive text-white hover:scale-105 transition-transform cursor-pointer"
+                    title="Remover Imagem"
+                  >
+                    <X className="h-4 w-4" />
+                  </button>
+                </div>
+                {/* Upload status badge */}
+                {isPreview && (
+                  <span className="absolute top-2 left-2 bg-amber-500/95 text-amber-foreground text-[8px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded shadow-sm">
+                    Enviando...
+                  </span>
+                )}
+                {/* Primary Image Label */}
+                {idx === 0 && (
+                  <span className="absolute bottom-2 left-2 bg-primary/90 text-primary-foreground text-[8px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded shadow-sm">
+                    Principal
+                  </span>
+                )}
               </div>
-              {/* Primary Image Label */}
-              {idx === 0 && (
-                <span className="absolute bottom-2 left-2 bg-primary/90 text-primary-foreground text-[8px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded shadow-sm">
-                  Principal
-                </span>
-              )}
-            </div>
-          ))}
+            );
+          })}
         </div>
       )}
     </div>
