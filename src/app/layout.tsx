@@ -13,13 +13,12 @@ export const metadata: Metadata = {
     images: [
       {
         url: "http://localhost:3007/og-image.jpg",
-        url: "http://localhost:3007/og-image.jpg",
         width: 1200,
         height: 630,
         alt: "Premium Catalog Banner",
       },
     ],
-    locale: "pt_BR",
+    locale: "pt-BR",
     type: "website",
   },
   twitter: {
