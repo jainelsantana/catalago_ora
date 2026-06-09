@@ -72,7 +72,7 @@ Acesse `http://localhost:3007`.
 
 ## Rodando com Docker
 
-O Compose usa credenciais locais isoladas (`COMPOSE_*`) para não misturar variáveis de deploy do `.env` com o Postgres local.
+O Compose sobe dois serviços: `app` e `postgres`. O `app` usa o PostgreSQL interno pelo host `postgres:5432` com usuário `catalogadmin`, senha `SecurePassw0rd2024` e banco `catalogdb`.
 
 ```bash
 docker compose up -d --build
@@ -84,11 +84,11 @@ Comandos úteis:
 
 ```bash
 docker compose ps
-docker compose logs -f web
+docker compose logs -f app
 docker compose down
 ```
 
-Se um volume antigo de Postgres tiver credenciais incompatíveis, pare e remova os volumes somente se puder perder os dados locais:
+Se um volume antigo de Postgres tiver credenciais incompatíveis, pare e remova os volumes somente se puder perder os dados locais. Isso é comum depois de trocar `postgres/postgres` para `catalogadmin/SecurePassw0rd2024`:
 
 ```bash
 docker compose down -v
