@@ -48,7 +48,9 @@ services:
     env_file:
       - ../.env
     environment:
+      - USE_COMPOSE_DATABASE_HOST=true
       - RUNNING_IN_DOCKER=true
+      - SKIP_DB_BOOTSTRAP=true
     volumes:
       - uploads_data:/app/public/uploads
     restart: always

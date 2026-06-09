@@ -29,6 +29,8 @@ RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
 
 COPY --from=builder /app/public ./public
+COPY --from=builder --chown=nextjs:nodejs /app/prisma ./prisma
+COPY --from=builder --chown=nextjs:nodejs /app/scripts ./scripts
 
 # Define as permissões para o cache do Next.js e uploads.
 RUN mkdir -p .next/cache public/uploads
@@ -37,9 +39,11 @@ RUN chown -R nextjs:nodejs .next/cache public/uploads
 # Copia o build standalone (exige output: 'standalone' no next.config.js)
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
+COPY --from=builder --chown=nextjs:nodejs /app/node_modules/prisma ./node_modules/prisma
+COPY --from=builder --chown=nextjs:nodejs /app/node_modules/@prisma ./node_modules/@prisma
 
 USER nextjs
 
 EXPOSE 3007
 ENV PORT 3007
-CMD ["node", "server.js"]
+CMD ["node", "scripts/start-production.js"]

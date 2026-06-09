@@ -94,6 +94,26 @@ docker compose logs -f web
 docker compose down
 ```
 
+## Deploy no Coolify
+
+Se o deploy for por Dockerfile, o container executa automaticamente:
+
+```bash
+prisma db push --skip-generate
+node prisma/seed.js
+node server.js
+```
+
+Configure as variáveis como Runtime Variables no Coolify:
+
+```env
+DATABASE_URL=postgresql://postgres:SENHA@HOST_DO_POSTGRES:5432/catalogdb?schema=public
+NEXTAUTH_URL=https://catalogo.ora.dev.br
+NEXTAUTH_SECRET=um_segredo_longo
+```
+
+Não defina `RUNNING_IN_DOCKER=true` nem `USE_COMPOSE_DATABASE_HOST=true` em deploy por Dockerfile. Essas variáveis são usadas apenas no `docker-compose.yml` deste projeto.
+
 ## Scripts Disponíveis
 
 - `npm run dev`: Inicia o ambiente de desenvolvimento.

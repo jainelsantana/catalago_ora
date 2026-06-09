@@ -3,7 +3,10 @@ import { PrismaClient } from "@prisma/client";
 const globalForPrisma = global as unknown as { prisma: PrismaClient };
 
 function shouldUseComposeDatabaseHost() {
-  return process.env.RUNNING_IN_DOCKER === "true";
+  return (
+    process.env.USE_COMPOSE_DATABASE_HOST === "true" ||
+    process.env.RUNNING_IN_DOCKER === "true"
+  );
 }
 
 function getDatabaseFallbackHost() {
