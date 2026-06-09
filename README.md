@@ -95,6 +95,29 @@ docker compose down -v
 docker compose up -d --build
 ```
 
+## Deploy no Coolify
+
+Use o build pack **Dockerfile** e exponha a porta `3007`.
+
+No recurso PostgreSQL do Coolify, copie a **Internal URL** do banco e configure a aplicação com:
+
+```env
+DATABASE_URL=postgresql://USUARIO:SENHA_URL_ENCODED@HOST_INTERNO_REAL:5432/catalogdb?schema=public
+NEXTAUTH_URL=https://seu-dominio.com
+NEXTAUTH_SECRET=troque_para_um_segredo_longo_e_seguro
+NEXT_PUBLIC_UPLOAD_API_URL=/api/upload
+```
+
+Não deixe `HOST_INTERNO_DO_POSTGRES`, `USER` ou `SENHA_URL_ENCODED` no valor de `DATABASE_URL`; esses nomes são apenas exemplos. Se a senha tiver caracteres especiais, use a URL interna já copiada do Coolify ou codifique caracteres como `@` para `%40`. Se preferir, configure variáveis separadas:
+
+```env
+DATABASE_HOST=HOST_INTERNO_REAL
+DATABASE_PORT=5432
+DATABASE_USER=USUARIO
+DATABASE_PASSWORD=SENHA_SEM_URL_ENCODE
+DATABASE_NAME=catalogdb
+```
+
 ## Scripts
 
 - `npm run dev`: inicia Next em `localhost:3007`.

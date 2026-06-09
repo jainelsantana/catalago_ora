@@ -4,9 +4,93 @@ const { spawn } = require("child_process");
 
 const DEFAULT_RETRIES = 30;
 const DEFAULT_RETRY_DELAY_MS = 3000;
+const DATABASE_URL_PLACEHOLDER_PARTS = [
+  "USER",
+  "SENHA_URL_ENCODED",
+  "HOST_INTERNO_DO_POSTGRES",
+];
+const DATABASE_URL_ENV_CANDIDATES = [
+  "DATABASE_URL",
+  "POSTGRES_URL",
+  "POSTGRESQL_URL",
+  "POSTGRES_PRISMA_URL",
+  "DATABASE_INTERNAL_URL",
+  "POSTGRES_INTERNAL_URL",
+  "POSTGRESQL_INTERNAL_URL",
+];
 
 function wait(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+function getFirstEnv(names) {
+  for (const name of names) {
+    const value = process.env[name]?.trim();
+    if (value) {
+      return value;
+    }
+  }
+
+  return undefined;
+}
+
+function containsPlaceholder(value) {
+  return DATABASE_URL_PLACEHOLDER_PARTS.some((part) => value.includes(part));
+}
+
+function encodeDatabaseValue(value) {
+  return encodeURIComponent(value);
+}
+
+function buildDatabaseUrlFromParts() {
+  const host = getFirstEnv([
+    "DATABASE_HOST",
+    "POSTGRES_HOST",
+    "POSTGRESQL_HOST",
+    "DB_HOST",
+    "DATABASE_FALLBACK_HOST",
+  ]);
+  const user = getFirstEnv(["DATABASE_USER", "POSTGRES_USER", "POSTGRESQL_USER", "DB_USER"]);
+  const password = getFirstEnv([
+    "DATABASE_PASSWORD",
+    "POSTGRES_PASSWORD",
+    "POSTGRESQL_PASSWORD",
+    "DB_PASSWORD",
+  ]);
+  const database = getFirstEnv([
+    "DATABASE_NAME",
+    "POSTGRES_DB",
+    "POSTGRESQL_DATABASE",
+    "DB_DATABASE",
+    "DB_NAME",
+  ]);
+  const port = getFirstEnv(["DATABASE_PORT", "POSTGRES_PORT", "POSTGRESQL_PORT", "DB_PORT"]) || "5432";
+
+  if (!host || !user || !password || !database) {
+    return undefined;
+  }
+
+  return `postgresql://${encodeDatabaseValue(user)}:${encodeDatabaseValue(password)}@${host}:${port}/${database}?schema=public`;
+}
+
+function getConfiguredDatabaseUrl() {
+  for (const envName of DATABASE_URL_ENV_CANDIDATES) {
+    const value = process.env[envName]?.trim();
+    if (value && !containsPlaceholder(value)) {
+      if (envName !== "DATABASE_URL") {
+        process.env.DATABASE_URL = value;
+      }
+      return value;
+    }
+  }
+
+  const builtUrl = buildDatabaseUrlFromParts();
+  if (builtUrl) {
+    process.env.DATABASE_URL = builtUrl;
+    return builtUrl;
+  }
+
+  return process.env.DATABASE_URL;
 }
 
 function shouldUseComposeDatabaseHost() {
@@ -46,9 +130,17 @@ function replaceDatabaseHost(parsedUrl, reason) {
 }
 
 function normalizeDatabaseUrl() {
-  const databaseUrl = process.env.DATABASE_URL;
+  const databaseUrl = getConfiguredDatabaseUrl();
   if (!databaseUrl) {
-    throw new Error("DATABASE_URL is not configured.");
+    throw new Error(
+      "DATABASE_URL is not configured. In Coolify, set DATABASE_URL to the PostgreSQL Internal URL, or set DATABASE_HOST, DATABASE_USER, DATABASE_PASSWORD, and DATABASE_NAME."
+    );
+  }
+
+  if (containsPlaceholder(databaseUrl)) {
+    throw new Error(
+      "DATABASE_URL still contains example placeholders. In Coolify, replace it with the PostgreSQL Internal URL copied from the database resource. Do not use USER, SENHA_URL_ENCODED, or HOST_INTERNO_DO_POSTGRES."
+    );
   }
 
   let parsedUrl;
@@ -65,12 +157,6 @@ function normalizeDatabaseUrl() {
 
   if (parsedUrl.hostname === "db" && !shouldUseComposeDatabaseHost()) {
     replaceDatabaseHost(parsedUrl, "DATABASE_URL uses host db, which only resolves inside Docker Compose.");
-  }
-
-  if (parsedUrl.hostname === "HOST_INTERNO_DO_POSTGRES") {
-    throw new Error(
-      "DATABASE_URL still contains the placeholder HOST_INTERNO_DO_POSTGRES. Replace it with the real Coolify PostgreSQL internal host."
-    );
   }
 
   if (isCoolifyRuntime && ["localhost", "127.0.0.1"].includes(parsedUrl.hostname)) {
