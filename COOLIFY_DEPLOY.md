@@ -33,6 +33,25 @@ DATABASE_PASSWORD=SENHA_SEM_URL_ENCODE
 DATABASE_NAME=catalogdb
 ```
 
+## Quando o app não alcança `postgresql-xxxx:5432`
+
+Esse host é interno do Docker/Coolify. Ele só funciona se a aplicação e o PostgreSQL estiverem na mesma rede interna. Se aparecer:
+
+```text
+Can't reach database server at `postgresql-g04ks8c:5432`
+```
+
+faça uma destas opções:
+
+1. Coloque a aplicação e o banco no mesmo projeto/ambiente/rede do Coolify e use a **Internal URL**.
+2. Habilite acesso público no PostgreSQL do Coolify e configure no app:
+
+```env
+DATABASE_PUBLIC_URL=postgresql://USUARIO:SENHA_URL_ENCODED@HOST_PUBLICO:PORTA_PUBLICA/catalogdb?schema=public
+```
+
+A aplicação tenta `DATABASE_URL` primeiro. Se a conexão falhar, ela tenta automaticamente `DATABASE_PUBLIC_URL`, `DATABASE_FALLBACK_URL` ou `COOLIFY_DATABASE_URL`, se alguma delas estiver configurada.
+
 ## Health check
 A URL de health check deve apontar para:
 

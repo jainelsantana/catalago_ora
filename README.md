@@ -122,6 +122,14 @@ DATABASE_PASSWORD=SENHA_SEM_URL_ENCODE
 DATABASE_NAME=catalogdb
 ```
 
+Se o log mostrar `Can't reach database server at postgresql-xxxx:5432`, o app não está conseguindo acessar a rede interna do banco. Nesse caso, coloque app e PostgreSQL no mesmo projeto/ambiente/rede do Coolify ou habilite acesso público no PostgreSQL e configure uma URL pública como fallback:
+
+```env
+DATABASE_PUBLIC_URL=postgresql://USUARIO:SENHA_URL_ENCODED@HOST_PUBLICO:PORTA_PUBLICA/catalogdb?schema=public
+```
+
+Na inicialização, a aplicação tenta `DATABASE_URL` primeiro e, se a conexão falhar, tenta `DATABASE_PUBLIC_URL`, `DATABASE_FALLBACK_URL` ou `COOLIFY_DATABASE_URL` quando essas variáveis existirem.
+
 ## Scripts
 
 - `npm run dev`: inicia Next em `localhost:3007`.

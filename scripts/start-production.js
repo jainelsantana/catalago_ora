@@ -11,13 +11,21 @@ const DATABASE_URL_PLACEHOLDER_PARTS = [
 ];
 const DATABASE_URL_ENV_CANDIDATES = [
   "DATABASE_URL",
+  "DATABASE_FALLBACK_URL",
+  "DATABASE_PUBLIC_URL",
+  "COOLIFY_DATABASE_URL",
   "POSTGRES_URL",
+  "POSTGRES_PUBLIC_URL",
   "POSTGRESQL_URL",
+  "POSTGRESQL_PUBLIC_URL",
   "POSTGRES_PRISMA_URL",
   "DATABASE_INTERNAL_URL",
   "POSTGRES_INTERNAL_URL",
   "POSTGRESQL_INTERNAL_URL",
 ];
+
+let databaseUrlCandidates = [];
+let activeDatabaseUrlCandidateIndex = 0;
 
 function wait(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
@@ -73,23 +81,60 @@ function buildDatabaseUrlFromParts() {
   return `postgresql://${encodeDatabaseValue(user)}:${encodeDatabaseValue(password)}@${host}:${port}/${database}?schema=public`;
 }
 
-function getConfiguredDatabaseUrl() {
+function addDatabaseUrlCandidate(candidates, value) {
+  if (!value || containsPlaceholder(value)) {
+    return;
+  }
+
+  if (!candidates.includes(value)) {
+    candidates.push(value);
+  }
+}
+
+function getDatabaseUrlCandidates() {
+  const candidates = [];
+
   for (const envName of DATABASE_URL_ENV_CANDIDATES) {
     const value = process.env[envName]?.trim();
-    if (value && !containsPlaceholder(value)) {
-      if (envName !== "DATABASE_URL") {
-        process.env.DATABASE_URL = value;
-      }
-      return value;
-    }
+    addDatabaseUrlCandidate(candidates, value);
   }
 
   const builtUrl = buildDatabaseUrlFromParts();
-  if (builtUrl) {
-    process.env.DATABASE_URL = builtUrl;
-    return builtUrl;
+  addDatabaseUrlCandidate(candidates, builtUrl);
+
+  return candidates;
+}
+
+function setActiveDatabaseUrlCandidate(index, reason) {
+  activeDatabaseUrlCandidateIndex = index;
+  process.env.DATABASE_URL = databaseUrlCandidates[index];
+
+  const prefix = reason ? `${reason} ` : "";
+  console.log(
+    `[startup] ${prefix}Using database target: ${describeDatabaseUrl(process.env.DATABASE_URL)}`
+  );
+}
+
+function tryNextDatabaseUrlCandidate(reason) {
+  const nextIndex = activeDatabaseUrlCandidateIndex + 1;
+
+  if (nextIndex >= databaseUrlCandidates.length) {
+    return false;
   }
 
+  setActiveDatabaseUrlCandidate(nextIndex, reason);
+  return true;
+}
+
+function getConfiguredDatabaseUrl() {
+  databaseUrlCandidates = getDatabaseUrlCandidates();
+  activeDatabaseUrlCandidateIndex = 0;
+
+  if (databaseUrlCandidates.length === 0) {
+    return process.env.DATABASE_URL;
+  }
+
+  process.env.DATABASE_URL = databaseUrlCandidates[0];
   return process.env.DATABASE_URL;
 }
 
@@ -216,6 +261,11 @@ async function waitForDatabase() {
 
       if (attempt === retries) {
         throw error;
+      }
+
+      if (tryNextDatabaseUrlCandidate("Trying fallback database URL after connection failure.")) {
+        await wait(500);
+        continue;
       }
 
       await wait(retryDelayMs);
