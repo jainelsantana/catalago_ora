@@ -108,7 +108,11 @@ NEXTAUTH_SECRET=troque_para_um_segredo_longo_e_seguro
 NEXT_PUBLIC_UPLOAD_API_URL=/api/upload
 ```
 
-Não deixe `HOST_INTERNO_DO_POSTGRES`, `USER` ou `SENHA_URL_ENCODED` no valor de `DATABASE_URL`; esses nomes são apenas exemplos. Se a senha tiver caracteres especiais, use a URL interna já copiada do Coolify ou codifique caracteres como `@` para `%40`. Se preferir, configure variáveis separadas:
+A variável `DATABASE_URL` é obrigatória no Coolify. Não deixe `HOST_INTERNO_DO_POSTGRES`, `USER` ou `SENHA_URL_ENCODED` no valor de `DATABASE_URL`; esses nomes são apenas exemplos.
+
+Se a senha tiver caracteres especiais, use a URL interna já copiada do Coolify ou codifique caracteres como `@` para `%40`.
+
+Se preferir, configure variáveis separadas:
 
 ```env
 DATABASE_HOST=HOST_INTERNO_REAL
