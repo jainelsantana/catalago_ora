@@ -51,9 +51,8 @@ function normalizeDatabaseUrl() {
   }
 
   if (isCoolifyRuntime && parsedUrl.hostname === "localhost") {
-    throw new Error(
-      "DATABASE_URL points to localhost. In Coolify, localhost is the application container, not PostgreSQL. Use the PostgreSQL Internal URL host."
-    );
+    parsedUrl.hostname = getDatabaseFallbackHost();
+    process.env.DATABASE_URL = parsedUrl.toString();
   }
 
   return process.env.DATABASE_URL;

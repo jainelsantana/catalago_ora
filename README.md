@@ -114,6 +114,12 @@ NEXTAUTH_SECRET=um_segredo_longo
 
 Não defina `RUNNING_IN_DOCKER=true` nem `USE_COMPOSE_DATABASE_HOST=true` em deploy por Dockerfile. Essas variáveis são usadas apenas no `docker-compose.yml` deste projeto.
 
+Se o Coolify estiver substituindo a URL do banco para `localhost`, informe o host que deve ser usado no fallback:
+
+```env
+DATABASE_FALLBACK_HOST=catalogo.ora.dev.br
+```
+
 ## Scripts Disponíveis
 
 - `npm run dev`: Inicia o ambiente de desenvolvimento.
