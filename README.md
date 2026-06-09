@@ -11,7 +11,7 @@ Antes de começar, certifique-se de ter instalado em sua máquina:
 
 ## Tecnologias Principais
 
-- **Framework**: Next.js 14+ (App Router)
+- **Framework**: Next.js 16 (App Router)
 - **Linguagem**: TypeScript
 - **Validação de Dados**: Zod
 - **Formulários**: React Hook Form
@@ -27,24 +27,24 @@ Crie um arquivo `.env` na raiz do projeto e configure as variáveis necessárias
 POSTGRES_USER=postgres
 POSTGRES_PASSWORD=postgres
 POSTGRES_DB=catalogdb
-DATABASE_URL="postgresql://postgres:postgres@db:5432/catalogdb?schema=public"
-NEXTAUTH_SECRET="seu_segredo_para_autenticacao"
-NEXTAUTH_URL="http://localhost:3007"
-NEXT_PUBLIC_UPLOAD_API_URL="/api/upload"
+DATABASE_URL=postgresql://postgres:postgres@db:5432/catalogdb?schema=public
+NEXTAUTH_SECRET=seu_segredo_para_autenticacao
+NEXTAUTH_URL=http://localhost:3007
+NEXT_PUBLIC_UPLOAD_API_URL=/api/upload
 ```
 
 Se rodar `npm run dev` direto na máquina, troque apenas o host da URL para `localhost`:
 
 ```env
-DATABASE_URL="postgresql://postgres:postgres@localhost:5432/catalogdb?schema=public"
+DATABASE_URL=postgresql://postgres:postgres@localhost:5432/catalogdb?schema=public
 ```
 
-Em produção fora do Docker Compose, use `localhost` ou o IP real do Postgres. O host `db` só existe para containers na rede do Compose.
+Em produção fora do Docker Compose, use o host real do Postgres. O host `db` só existe para containers na rede do Compose.
 
 Se o deploy mantiver `DATABASE_URL` com `@db:5432`, defina também o host real do Postgres:
 
 ```env
-DATABASE_FALLBACK_HOST=catalogo.ora.dev.br
+DATABASE_FALLBACK_HOST=HOST_REAL_DO_POSTGRES
 ```
 
 ## Getting Started
@@ -96,7 +96,9 @@ docker compose down
 
 ## Deploy no Coolify
 
-Se o deploy for por Dockerfile, o container executa automaticamente:
+Use o build pack **Dockerfile**. Se o repositório enviado ao Coolify for a pasta `Projeto`, configure **Base Directory** como `/catalago_ora`; se o repositório já for `catalago_ora`, use `/`. Em **Network / Port Exposes**, configure `3007`.
+
+No deploy por Dockerfile, o container executa automaticamente:
 
 ```bash
 prisma db push --skip-generate
@@ -104,21 +106,26 @@ node prisma/seed.js
 node server.js
 ```
 
-Configure as variáveis como Runtime Variables no Coolify:
+Configure as variáveis como **Runtime Variables** no Coolify. Use a URL interna do PostgreSQL criada pelo Coolify quando a aplicação e o banco estiverem na mesma rede:
 
 ```env
-DATABASE_URL=postgresql://postgres:SENHA@HOST_DO_POSTGRES:5432/catalogdb?schema=public
+DATABASE_URL=postgresql://USER:SENHA_URL_ENCODED@HOST_INTERNO_DO_POSTGRES:5432/catalogdb?schema=public
 NEXTAUTH_URL=https://catalogo.ora.dev.br
 NEXTAUTH_SECRET=um_segredo_longo
+NEXT_PUBLIC_UPLOAD_API_URL=/api/upload
 ```
 
-Não defina `RUNNING_IN_DOCKER=true` nem `USE_COMPOSE_DATABASE_HOST=true` em deploy por Dockerfile. Essas variáveis são usadas apenas no `docker-compose.yml` deste projeto.
+Se a senha do banco tiver caracteres especiais, codifique-os na URL (`@` vira `%40`, por exemplo). No Coolify, marque a variável como **Literal** se o valor tiver `$`.
 
-Se o Coolify estiver substituindo a URL do banco para `localhost`, informe o host que deve ser usado no fallback:
+Não defina `RUNNING_IN_DOCKER=true`, `USE_COMPOSE_DATABASE_HOST=true` nem `SKIP_DB_BOOTSTRAP=true` em deploy por Dockerfile. Essas variáveis são usadas apenas no `docker-compose.yml` deste projeto.
+
+Não use `localhost` como host do Postgres no container da aplicação. Se o Coolify estiver substituindo a URL do banco para `localhost` ou se a URL ainda tiver `db`, informe o host interno do Postgres no fallback:
 
 ```env
-DATABASE_FALLBACK_HOST=catalogo.ora.dev.br
+DATABASE_FALLBACK_HOST=HOST_INTERNO_DO_POSTGRES
 ```
+
+O endpoint `/api/health` pode ser usado como health check porque valida a conexão com o banco.
 
 ## Scripts Disponíveis
 

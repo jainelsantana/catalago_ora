@@ -11,7 +11,7 @@ function getDatabaseFallbackHost() {
     return process.env.DATABASE_FALLBACK_HOST;
   }
 
-  if (process.env.NEXTAUTH_URL) {
+  if (process.env.NODE_ENV !== "production" && process.env.NEXTAUTH_URL) {
     try {
       return new URL(process.env.NEXTAUTH_URL).hostname;
     } catch {
@@ -32,10 +32,14 @@ function getRuntimeDatabaseUrl() {
     // `db` only resolves inside Docker Compose. Deployments that run the app
     // outside that Compose network must use the host that exposes Postgres.
     if (parsedUrl.hostname === "db" && !shouldUseComposeDatabaseHost()) {
-      parsedUrl.hostname = getDatabaseFallbackHost();
-      const rewrittenUrl = parsedUrl.toString();
-      process.env.DATABASE_URL = rewrittenUrl;
-      return rewrittenUrl;
+      const fallbackHost = getDatabaseFallbackHost();
+
+      if (fallbackHost && (fallbackHost !== "localhost" || process.env.NODE_ENV !== "production")) {
+        parsedUrl.hostname = fallbackHost;
+        const rewrittenUrl = parsedUrl.toString();
+        process.env.DATABASE_URL = rewrittenUrl;
+        return rewrittenUrl;
+      }
     }
   } catch {
     return databaseUrl;
@@ -62,4 +66,3 @@ const prismaClientSingletonFactory = () => {
 export const prisma = globalForPrisma.prisma ?? prismaClientSingletonFactory();
 
 if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = prisma;
-

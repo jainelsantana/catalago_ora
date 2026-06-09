@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-require-imports */
+
 const { spawn } = require("child_process");
 
 const DEFAULT_RETRIES = 30;
@@ -19,7 +21,7 @@ function getDatabaseFallbackHost() {
     return process.env.DATABASE_FALLBACK_HOST;
   }
 
-  if (process.env.NEXTAUTH_URL) {
+  if (process.env.NODE_ENV !== "production" && process.env.NEXTAUTH_URL) {
     try {
       return new URL(process.env.NEXTAUTH_URL).hostname;
     } catch {
@@ -30,18 +32,39 @@ function getDatabaseFallbackHost() {
   return "localhost";
 }
 
+function replaceDatabaseHost(parsedUrl, reason) {
+  const fallbackHost = getDatabaseFallbackHost();
+
+  if (!fallbackHost || (fallbackHost === "localhost" && process.env.NODE_ENV === "production")) {
+    throw new Error(
+      `${reason} Set DATABASE_URL to the Coolify PostgreSQL internal URL, or set DATABASE_FALLBACK_HOST to the real database host.`
+    );
+  }
+
+  parsedUrl.hostname = fallbackHost;
+  process.env.DATABASE_URL = parsedUrl.toString();
+}
+
 function normalizeDatabaseUrl() {
   const databaseUrl = process.env.DATABASE_URL;
   if (!databaseUrl) {
     throw new Error("DATABASE_URL is not configured.");
   }
 
-  const parsedUrl = new URL(databaseUrl);
+  let parsedUrl;
+
+  try {
+    parsedUrl = new URL(databaseUrl);
+  } catch {
+    throw new Error(
+      "DATABASE_URL is invalid. URL-encode special characters in the user/password, for example @ as %40."
+    );
+  }
+
   const isCoolifyRuntime = Boolean(process.env.COOLIFY_RESOURCE_UUID || process.env.COOLIFY_URL);
 
   if (parsedUrl.hostname === "db" && !shouldUseComposeDatabaseHost()) {
-    parsedUrl.hostname = getDatabaseFallbackHost();
-    process.env.DATABASE_URL = parsedUrl.toString();
+    replaceDatabaseHost(parsedUrl, "DATABASE_URL uses host db, which only resolves inside Docker Compose.");
   }
 
   if (parsedUrl.hostname === "HOST_INTERNO_DO_POSTGRES") {
@@ -50,9 +73,8 @@ function normalizeDatabaseUrl() {
     );
   }
 
-  if (isCoolifyRuntime && parsedUrl.hostname === "localhost") {
-    parsedUrl.hostname = getDatabaseFallbackHost();
-    process.env.DATABASE_URL = parsedUrl.toString();
+  if (isCoolifyRuntime && ["localhost", "127.0.0.1"].includes(parsedUrl.hostname)) {
+    replaceDatabaseHost(parsedUrl, "DATABASE_URL points to localhost inside Coolify.");
   }
 
   return process.env.DATABASE_URL;
