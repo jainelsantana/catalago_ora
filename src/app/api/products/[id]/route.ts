@@ -1,7 +1,21 @@
 import { authOptions } from "@/lib/auth";
+import { getErrorCode } from "@/lib/errors";
 import { prisma } from "@/lib/prisma";
 import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
+
+type ProductPayload = {
+  name?: string;
+  slug?: string;
+  shortDescription?: string;
+  description?: string;
+  price?: string | number;
+  stock?: string | number;
+  sku?: string;
+  status?: string;
+  categoryId?: string;
+  images?: string[];
+};
 
 export async function GET(
   req: Request,
@@ -28,7 +42,7 @@ export async function GET(
     }
 
     return NextResponse.json(product);
-  } catch (error) {
+  } catch {
     return NextResponse.json({ error: "Erro ao buscar produto." }, { status: 500 });
   }
 }
@@ -39,12 +53,12 @@ export async function PUT(
 ) {
   try {
     const session = await getServerSession(authOptions);
-    if (!session || (session.user as any)?.role !== "ADMIN") {
+    if (session?.user.role !== "ADMIN") {
       return NextResponse.json({ error: "Não autorizado." }, { status: 401 });
     }
 
     const { id } = await params;
-    const body = await req.json();
+    const body = (await req.json()) as ProductPayload;
     const {
       name,
       slug,
@@ -78,13 +92,13 @@ export async function PUT(
           slug,
           shortDescription,
           description,
-          price: parseFloat(price),
-          stock: parseInt(stock || "0", 10),
+          price: parseFloat(String(price)),
+          stock: parseInt(String(stock ?? "0"), 10),
           sku,
           status: status || "ACTIVE",
           categoryId,
           images: {
-            create: (images || []).map((url: string) => ({ url })),
+            create: (images ?? []).map((url) => ({ url })),
           },
         },
         include: {
@@ -99,17 +113,17 @@ export async function PUT(
       data: {
         action: "UPDATE_PRODUCT",
         details: JSON.stringify({ productId: product.id, name: product.name, sku: product.sku }),
-        userId: (session.user as any).id,
+        userId: session.user.id,
       },
     });
 
     return NextResponse.json(product);
-  } catch (error: any) {
+  } catch (error) {
     console.error("Error updating product:", error);
-    if (error.code === "P2025") {
+    if (getErrorCode(error) === "P2025") {
       return NextResponse.json({ error: "Produto não encontrado." }, { status: 404 });
     }
-    if (error.code === "P2002") {
+    if (getErrorCode(error) === "P2002") {
       return NextResponse.json({ error: "Já existe um produto com este slug ou SKU." }, { status: 400 });
     }
     return NextResponse.json({ error: "Erro ao atualizar produto." }, { status: 500 });
@@ -122,7 +136,7 @@ export async function DELETE(
 ) {
   try {
     const session = await getServerSession(authOptions);
-    if (!session || (session.user as any)?.role !== "ADMIN") {
+    if (session?.user.role !== "ADMIN") {
       return NextResponse.json({ error: "Não autorizado." }, { status: 401 });
     }
 
@@ -141,13 +155,13 @@ export async function DELETE(
       data: {
         action: "DELETE_PRODUCT",
         details: JSON.stringify({ productId: product.id, name: product.name, sku: product.sku }),
-        userId: (session.user as any).id,
+        userId: session.user.id,
       },
     });
 
     return NextResponse.json({ message: "Produto excluído com sucesso." });
-  } catch (error: any) {
-    if (error.code === "P2025") {
+  } catch (error) {
+    if (getErrorCode(error) === "P2025") {
       return NextResponse.json({ error: "Produto não encontrado." }, { status: 404 });
     }
     return NextResponse.json({ error: "Erro ao excluir produto." }, { status: 500 });

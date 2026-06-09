@@ -15,7 +15,7 @@ COPY . .
 ENV NEXT_TELEMETRY_DISABLED=1
 # Used only during image build; runtime must provide its own DATABASE_URL.
 ENV DATABASE_URL="postgresql://user:pass@host:5432/db?schema=public"
-RUN npx prisma generate
+RUN npm run prisma:generate
 RUN npm run build
 
 # 3. Imagem de produção

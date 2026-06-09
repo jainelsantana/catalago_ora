@@ -39,7 +39,7 @@ export function LoginForm() {
         router.push(safeCallbackUrl);
         router.refresh();
       }
-    } catch (err) {
+    } catch {
       setError("Erro de conexão. Tente novamente.");
     } finally {
       setLoading(false);

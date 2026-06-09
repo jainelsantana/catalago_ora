@@ -1,7 +1,22 @@
 import { authOptions } from "@/lib/auth";
+import { getErrorCode } from "@/lib/errors";
 import { prisma } from "@/lib/prisma";
+import type { Prisma } from "@prisma/client";
 import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
+
+type ProductPayload = {
+  name?: string;
+  slug?: string;
+  shortDescription?: string;
+  description?: string;
+  price?: string | number;
+  stock?: string | number;
+  sku?: string;
+  status?: string;
+  categoryId?: string;
+  images?: string[];
+};
 
 export async function GET(req: Request) {
   try {
@@ -15,7 +30,7 @@ export async function GET(req: Request) {
     const skip = (page - 1) * limit;
 
     // Build Prisma query condition
-    const where: any = {
+    const where: Prisma.ProductWhereInput = {
       deletedAt: null, // Always exclude soft-deleted items
     };
 
@@ -60,7 +75,7 @@ export async function GET(req: Request) {
         pages: Math.ceil(total / limit),
       },
     });
-  } catch (error) {
+  } catch {
     return NextResponse.json({ error: "Erro ao buscar produtos." }, { status: 500 });
   }
 }
@@ -68,11 +83,11 @@ export async function GET(req: Request) {
 export async function POST(req: Request) {
   try {
     const session = await getServerSession(authOptions);
-    if (!session || (session.user as any)?.role !== "ADMIN") {
+    if (session?.user.role !== "ADMIN") {
       return NextResponse.json({ error: "Não autorizado." }, { status: 401 });
     }
 
-    const body = await req.json();
+    const body = (await req.json()) as ProductPayload;
     const {
       name,
       slug,
@@ -98,13 +113,13 @@ export async function POST(req: Request) {
         slug,
         shortDescription,
         description,
-        price: parseFloat(price),
-        stock: parseInt(stock || "0", 10),
+        price: parseFloat(String(price)),
+        stock: parseInt(String(stock ?? "0"), 10),
         sku,
         status: status || "ACTIVE",
         categoryId,
         images: {
-          create: (images || []).map((url: string) => ({ url })),
+          create: (images ?? []).map((url) => ({ url })),
         },
       },
       include: {
@@ -118,14 +133,14 @@ export async function POST(req: Request) {
       data: {
         action: "CREATE_PRODUCT",
         details: JSON.stringify({ productId: product.id, name: product.name, sku: product.sku }),
-        userId: (session.user as any).id,
+        userId: session.user.id,
       },
     });
 
     return NextResponse.json(product, { status: 201 });
-  } catch (error: any) {
+  } catch (error) {
     console.error("Error creating product:", error);
-    if (error.code === "P2002") {
+    if (getErrorCode(error) === "P2002") {
       return NextResponse.json({ error: "Já existe um produto com este slug ou SKU." }, { status: 400 });
     }
     return NextResponse.json({ error: "Erro ao criar produto." }, { status: 500 });

@@ -29,7 +29,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       },
       ...productUrls,
     ];
-  } catch (error) {
+  } catch {
     console.warn("Database offline during sitemap generation. Returning fallback sitemap.");
     return [
       {

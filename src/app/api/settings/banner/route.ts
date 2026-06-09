@@ -6,11 +6,6 @@ import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
 import * as zod from "zod";
 
-type AdminSessionUser = {
-  id?: string;
-  role?: string;
-};
-
 const bannerSettingsSchema = zod.object({
   bannerEyebrow: zod.string().trim().min(2, "O selo deve ter pelo menos 2 caracteres.").max(60, "O selo deve ter no máximo 60 caracteres."),
   bannerTitle: zod.string().trim().min(5, "O título deve ter pelo menos 5 caracteres.").max(90, "O título deve ter no máximo 90 caracteres."),
@@ -25,9 +20,8 @@ export async function GET() {
 export async function PUT(req: Request) {
   try {
     const session = await getServerSession(authOptions);
-    const user = session?.user as AdminSessionUser | undefined;
 
-    if (!session || user?.role !== "ADMIN") {
+    if (session?.user.role !== "ADMIN") {
       return NextResponse.json({ error: "Não autorizado." }, { status: 401 });
     }
 
@@ -47,7 +41,7 @@ export async function PUT(req: Request) {
       data: {
         action: "UPDATE_BANNER",
         details: JSON.stringify({ bannerTitle: settings.bannerTitle }),
-        userId: user.id,
+        userId: session.user.id,
       },
     });
 

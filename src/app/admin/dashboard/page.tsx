@@ -167,17 +167,13 @@ export default async function DashboardPage() {
             <div className="relative border-l border-border pl-4 space-y-6">
               {recentLogs.map((log) => {
                 let actionText = log.action;
-                let actionColor = "bg-primary text-primary-foreground";
                 
                 if (log.action === "CREATE_PRODUCT") {
                   actionText = "Criou Produto";
-                  actionColor = "bg-emerald-600 text-white";
                 } else if (log.action === "UPDATE_PRODUCT") {
                   actionText = "Atualizou Produto";
-                  actionColor = "bg-blue-600 text-white";
                 } else if (log.action === "DELETE_PRODUCT") {
                   actionText = "Excluiu Produto";
-                  actionColor = "bg-rose-600 text-white";
                 }
 
                 const details = JSON.parse(log.details);

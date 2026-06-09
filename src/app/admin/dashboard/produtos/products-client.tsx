@@ -1,11 +1,12 @@
 "use client";
 
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as zod from "zod";
 import { useState, useEffect } from "react";
 import { ImageUploader } from "./image-uploader";
+import { readApiError } from "@/lib/errors";
 import {
   Package,
   Plus,
@@ -117,7 +118,7 @@ export function ProductsClient() {
     register,
     handleSubmit,
     setValue,
-    watch,
+    control,
     reset,
     register: registerField, // Para registro manual de campos customizados
     formState: { errors, isSubmitting }
@@ -150,8 +151,8 @@ export function ProductsClient() {
   }, [registerField]);
 
   // Watch fields for automatic updates
-  const watchedName = watch("name");
-  const uploadedImages = watch("images") || [];
+  const watchedName = useWatch({ control, name: "name" });
+  const uploadedImages = useWatch({ control, name: "images" }) || [];
 
   // Fetch categories
   const { data: categories = [] } = useQuery<Category[]>({
@@ -252,9 +253,8 @@ export function ProductsClient() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload)
       });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error || "Erro ao criar produto.");
-      return data;
+      if (!res.ok) throw new Error(await readApiError(res, "Erro ao criar produto."));
+      return res.json();
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["products"] });
@@ -264,7 +264,7 @@ export function ProductsClient() {
         reset();
       }, 1500);
     },
-    onError: (err: any) => {
+    onError: (err: Error) => {
       setErrorMessage(err.message);
     }
   });
@@ -277,9 +277,8 @@ export function ProductsClient() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload)
       });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error || "Erro ao atualizar produto.");
-      return data;
+      if (!res.ok) throw new Error(await readApiError(res, "Erro ao atualizar produto."));
+      return res.json();
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["products"] });
@@ -290,7 +289,7 @@ export function ProductsClient() {
         reset();
       }, 1500);
     },
-    onError: (err: any) => {
+    onError: (err: Error) => {
       setErrorMessage(err.message);
     }
   });
@@ -313,14 +312,13 @@ export function ProductsClient() {
           images: product.images.map((img) => img.url)
         })
       });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error || "Erro ao alterar status.");
-      return data;
+      if (!res.ok) throw new Error(await readApiError(res, "Erro ao alterar status."));
+      return res.json();
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["products"] });
     },
-    onError: (err: any) => {
+    onError: (err: Error) => {
       alert(err.message);
     }
   });
@@ -330,16 +328,15 @@ export function ProductsClient() {
       const res = await fetch(`/api/products/${id}`, {
         method: "DELETE"
       });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error || "Erro ao excluir produto.");
-      return data;
+      if (!res.ok) throw new Error(await readApiError(res, "Erro ao excluir produto."));
+      return res.json();
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["products"] });
       setSuccessMessage("Produto excluído com sucesso!");
       setTimeout(() => setSuccessMessage(""), 3000);
     },
-    onError: (err: any) => {
+    onError: (err: Error) => {
       alert(err.message);
     }
   });

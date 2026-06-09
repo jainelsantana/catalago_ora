@@ -6,6 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import * as zod from "zod";
 import { useState } from "react";
 import { FolderTree, Plus, Edit2, Trash2, Loader2, X } from "lucide-react";
+import { readApiError } from "@/lib/errors";
 
 // Form validation schema
 const categorySchema = zod.object({
@@ -98,9 +99,8 @@ export function CategoriesClient() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(values)
       });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error || "Erro ao criar categoria.");
-      return data;
+      if (!res.ok) throw new Error(await readApiError(res, "Erro ao criar categoria."));
+      return res.json();
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["categories"] });
@@ -110,7 +110,7 @@ export function CategoriesClient() {
         reset();
       }, 1500);
     },
-    onError: (err: any) => {
+    onError: (err: Error) => {
       setErrorMessage(err.message);
     }
   });
@@ -122,9 +122,8 @@ export function CategoriesClient() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(values)
       });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error || "Erro ao atualizar categoria.");
-      return data;
+      if (!res.ok) throw new Error(await readApiError(res, "Erro ao atualizar categoria."));
+      return res.json();
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["categories"] });
@@ -135,7 +134,7 @@ export function CategoriesClient() {
         reset();
       }, 1500);
     },
-    onError: (err: any) => {
+    onError: (err: Error) => {
       setErrorMessage(err.message);
     }
   });
@@ -145,16 +144,15 @@ export function CategoriesClient() {
       const res = await fetch(`/api/categories/${id}`, {
         method: "DELETE"
       });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error || "Erro ao excluir categoria.");
-      return data;
+      if (!res.ok) throw new Error(await readApiError(res, "Erro ao excluir categoria."));
+      return res.json();
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["categories"] });
       setSuccessMessage("Categoria excluída com sucesso!");
       setTimeout(() => setSuccessMessage(""), 3000);
     },
-    onError: (err: any) => {
+    onError: (err: Error) => {
       alert(err.message);
     }
   });
