@@ -37,10 +37,23 @@ function normalizeDatabaseUrl() {
   }
 
   const parsedUrl = new URL(databaseUrl);
+  const isCoolifyRuntime = Boolean(process.env.COOLIFY_RESOURCE_UUID || process.env.COOLIFY_URL);
 
   if (parsedUrl.hostname === "db" && !shouldUseComposeDatabaseHost()) {
     parsedUrl.hostname = getDatabaseFallbackHost();
     process.env.DATABASE_URL = parsedUrl.toString();
+  }
+
+  if (parsedUrl.hostname === "HOST_INTERNO_DO_POSTGRES") {
+    throw new Error(
+      "DATABASE_URL still contains the placeholder HOST_INTERNO_DO_POSTGRES. Replace it with the real Coolify PostgreSQL internal host."
+    );
+  }
+
+  if (isCoolifyRuntime && parsedUrl.hostname === "localhost") {
+    throw new Error(
+      "DATABASE_URL points to localhost. In Coolify, localhost is the application container, not PostgreSQL. Use the PostgreSQL Internal URL host."
+    );
   }
 
   return process.env.DATABASE_URL;
