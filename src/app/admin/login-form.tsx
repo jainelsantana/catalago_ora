@@ -6,6 +6,22 @@ import { useState } from "react";
 import { Shield, Lock, Mail, Loader2, ArrowRight } from "lucide-react";
 import Link from "next/link";
 
+function getLoginErrorMessage(error?: string | null) {
+  if (!error) {
+    return "Não foi possível autenticar. Tente novamente.";
+  }
+
+  if (error === "CredentialsSignin") {
+    return "E-mail ou senha inválidos.";
+  }
+
+  try {
+    return decodeURIComponent(error);
+  } catch {
+    return error;
+  }
+}
+
 export function LoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -26,19 +42,22 @@ export function LoginForm() {
     setError("");
 
     try {
+      const normalizedEmail = email.trim().toLowerCase();
+
       const result = await signIn("credentials", {
-        email,
+        email: normalizedEmail,
         password,
+        callbackUrl: safeCallbackUrl,
         redirect: false,
       });
 
-      if (result?.error) {
-        // Map common errors or show direct message
-        setError(result.error || "E-mail ou senha inválidos.");
-      } else {
-        router.push(safeCallbackUrl);
+      if (result?.ok) {
+        router.replace(safeCallbackUrl);
         router.refresh();
+        return;
       }
+
+      setError(getLoginErrorMessage(result?.error));
     } catch {
       setError("Erro de conexão. Tente novamente.");
     } finally {
@@ -79,7 +98,10 @@ export function LoginForm() {
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
+                onBlur={() => setEmail((currentEmail) => currentEmail.trim().toLowerCase())}
                 placeholder="admin@catalog.com"
+                autoComplete="email"
+                aria-invalid={Boolean(error)}
                 className="w-full pl-10 pr-4 py-2.5 rounded-lg border border-border bg-background text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
                 disabled={loading}
               />
@@ -99,7 +121,9 @@ export function LoginForm() {
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                placeholder="••••••••"
+                placeholder="Digite sua senha"
+                autoComplete="current-password"
+                aria-invalid={Boolean(error)}
                 className="w-full pl-10 pr-4 py-2.5 rounded-lg border border-border bg-background text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
                 disabled={loading}
               />

@@ -187,6 +187,8 @@ DATABASE_PUBLIC_URL=postgresql://USUARIO:SENHA_URL_ENCODED@HOST_PUBLICO:PORTA_PU
 - E-mail: `admin@catalog.com`
 - Senha: `admin123`
 
+Em deploys existentes, configure `ADMIN_EMAIL` e `ADMIN_PASSWORD` no ambiente e rode o deploy novamente para sincronizar o usuário admin.
+
 ## Health check
 
 ```bash

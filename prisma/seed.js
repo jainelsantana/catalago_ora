@@ -16,6 +16,14 @@ const defaultBannerSettings = {
     "Encontre uma seleção especial de eletrônicos, vestuário, móveis e acessórios de alta performance. Qualidade garantida com atendimento premium.",
 };
 
+function getAdminEmail() {
+  return (process.env.ADMIN_EMAIL || "admin@catalog.com").trim().toLowerCase();
+}
+
+function getAdminPassword() {
+  return process.env.ADMIN_PASSWORD || "admin123";
+}
+
 function loadImportedProducts() {
   if (!fs.existsSync(importedProductsPath)) {
     return [];
@@ -100,14 +108,15 @@ async function seedImportedProducts() {
 }
 
 async function main() {
-  const adminEmail = "admin@catalog.com";
+  const adminEmail = getAdminEmail();
+  const adminPassword = getAdminPassword();
 
   const existingAdmin = await prisma.user.findUnique({
     where: { email: adminEmail },
   });
 
   if (!existingAdmin) {
-    const hashedPassword = await bcrypt.hash("admin123", 10);
+    const hashedPassword = await bcrypt.hash(adminPassword, 10);
     await prisma.user.create({
       data: {
         email: adminEmail,
@@ -118,7 +127,29 @@ async function main() {
     });
     console.log("Admin user seeded successfully!");
   } else {
-    console.log("Admin user already exists.");
+    const updateData = {};
+
+    if (existingAdmin.role !== "ADMIN") {
+      updateData.role = "ADMIN";
+    }
+
+    if (!existingAdmin.name) {
+      updateData.name = "Administrador";
+    }
+
+    if (process.env.ADMIN_PASSWORD) {
+      updateData.password = await bcrypt.hash(adminPassword, 10);
+    }
+
+    if (Object.keys(updateData).length > 0) {
+      await prisma.user.update({
+        where: { email: adminEmail },
+        data: updateData,
+      });
+      console.log("Admin user synchronized successfully!");
+    } else {
+      console.log("Admin user already exists.");
+    }
   }
 
   const categories = [

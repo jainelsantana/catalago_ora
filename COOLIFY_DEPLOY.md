@@ -16,12 +16,20 @@ NEXTAUTH_SECRET=troque_para_um_segredo_longo_e_seguro
 NEXT_PUBLIC_UPLOAD_API_URL=/api/upload
 ```
 
+Para criar ou resetar o acesso admin no próximo deploy, configure também:
+
+```env
+ADMIN_EMAIL=admin@catalog.com
+ADMIN_PASSWORD=troque_por_uma_senha_forte
+```
+
 ### Regras importantes
 - `DATABASE_URL` deve ser a **Internal URL** do recurso PostgreSQL do Coolify.
 - Não use `db`, `localhost`, `127.0.0.1`, `HOST_INTERNO_DO_POSTGRES`, `USER` ou `SENHA_URL_ENCODED` literais.
 - Se a senha tiver caracteres especiais, use a URL interna do Coolify ou codifique os caracteres.
 - `NEXTAUTH_URL` precisa ser o domínio público do app.
 - `NEXTAUTH_SECRET` deve ser um segredo forte e exclusivo.
+- `ADMIN_PASSWORD`, quando configurada, redefine a senha do admin sempre que o seed rodar.
 
 ## Opcional
 Se preferir não usar `DATABASE_URL`, a aplicação aceita também:

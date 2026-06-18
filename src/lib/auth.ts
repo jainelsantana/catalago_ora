@@ -12,14 +12,16 @@ export const authOptions: AuthOptions = {
         password: { label: "Senha", type: "password" },
       },
       async authorize(credentials) {
-        if (!credentials?.email || !credentials?.password) {
+        const email = credentials?.email?.trim().toLowerCase();
+
+        if (!email || !credentials?.password) {
           throw new Error("E-mail e senha são obrigatórios.");
         }
 
         let user;
         try {
           user = await prisma.user.findUnique({
-            where: { email: credentials.email },
+            where: { email },
           });
         } catch (error) {
           console.error("Authentication database error:", error);
@@ -34,6 +36,10 @@ export const authOptions: AuthOptions = {
 
         if (!isPasswordValid) {
           throw new Error("Senha inválida.");
+        }
+
+        if (user.role !== "ADMIN") {
+          throw new Error("Este usuário não tem acesso administrativo.");
         }
 
         return {
