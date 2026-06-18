@@ -1,0 +1,692 @@
+﻿[
+    {
+        "name":  "Grandstream GWN7672 - Access Point Wi-Fi 6 MIMO 2x2",
+        "slug":  "grandstream-gwn7672-access-point-wi-fi-6-mimo-2x2",
+        "shortDescription":  "Access Point Wi-Fi 6 MIMO 2x2",
+        "description":  "Fabricante: Grandstream. Modelo: GWN7672. Categoria: Access Point. Descrição: Access Point Wi-Fi 6 MIMO 2x2.",
+        "price":  940,
+        "stock":  1,
+        "sku":  "GWN7672",
+        "status":  "ACTIVE",
+        "categoryName":  "Access Point",
+        "categorySlug":  "access-point",
+        "images":  [
+
+                   ]
+    },
+    {
+        "name":  "Grandstream GWN7660E - Access Point Wi-Fi 6 MIMO 2x2 Gigabit",
+        "slug":  "grandstream-gwn7660e-access-point-wi-fi-6-mimo-2x2-gigabit",
+        "shortDescription":  "Access Point Wi-Fi 6 MIMO 2x2 Gigabit",
+        "description":  "Fabricante: Grandstream. Modelo: GWN7660E. Categoria: Access Point. Descrição: Access Point Wi-Fi 6 MIMO 2x2 Gigabit.",
+        "price":  360,
+        "stock":  1,
+        "sku":  "GWN7660E",
+        "status":  "ACTIVE",
+        "categoryName":  "Access Point",
+        "categorySlug":  "access-point",
+        "images":  [
+
+                   ]
+    },
+    {
+        "name":  "Grandstream GWN7806 - Switch 48P Gigabit + 6 SFP+10G",
+        "slug":  "grandstream-gwn7806-switch-48p-gigabit-6-sfp-10g",
+        "shortDescription":  "Switch 48P Gigabit + 6 SFP+10G",
+        "description":  "Fabricante: Grandstream. Modelo: GWN7806. Categoria: Switch Gerenciável. Descrição: Switch 48P Gigabit + 6 SFP+10G.",
+        "price":  1999,
+        "stock":  1,
+        "sku":  "GWN7806",
+        "status":  "ACTIVE",
+        "categoryName":  "Switch Gerenciável",
+        "categorySlug":  "switch-gerenciavel",
+        "images":  [
+
+                   ]
+    },
+    {
+        "name":  "Grandstream GWN7813P - Switch L3 24P Gigabit PoE + 4 SFP+10G - 300W",
+        "slug":  "grandstream-gwn7813p-switch-l3-24p-gigabit-poe-4-sfp-10g-300w",
+        "shortDescription":  "Switch L3 24P Gigabit PoE + 4 SFP+10G - 300W",
+        "description":  "Fabricante: Grandstream. Modelo: GWN7813P. Categoria: Switch Gerenciável. Descrição: Switch L3 24P Gigabit PoE + 4 SFP+10G - 300W.",
+        "price":  2200.95,
+        "stock":  1,
+        "sku":  "GWN7813P",
+        "status":  "ACTIVE",
+        "categoryName":  "Switch Gerenciável",
+        "categorySlug":  "switch-gerenciavel",
+        "images":  [
+
+                   ]
+    },
+    {
+        "name":  "Grandstream GWN7816 - Switch L3 48P Gigabit + 6 SFP+10G",
+        "slug":  "grandstream-gwn7816-switch-l3-48p-gigabit-6-sfp-10g",
+        "shortDescription":  "Switch L3 48P Gigabit + 6 SFP+10G",
+        "description":  "Fabricante: Grandstream. Modelo: GWN7816. Categoria: Switch Gerenciável. Descrição: Switch L3 48P Gigabit + 6 SFP+10G.",
+        "price":  2498.29,
+        "stock":  1,
+        "sku":  "GWN7816",
+        "status":  "ACTIVE",
+        "categoryName":  "Switch Gerenciável",
+        "categorySlug":  "switch-gerenciavel",
+        "images":  [
+
+                   ]
+    },
+    {
+        "name":  "Grandstream GWN7832 - Switch L3 Agregação 12P SFP+10G",
+        "slug":  "grandstream-gwn7832-switch-l3-agregacao-12p-sfp-10g",
+        "shortDescription":  "Switch L3 Agregação 12P SFP+10G",
+        "description":  "Fabricante: Grandstream. Modelo: GWN7832. Categoria: Switch Gerenciável. Descrição: Switch L3 Agregação 12P SFP+10G.",
+        "price":  1441.94,
+        "stock":  1,
+        "sku":  "GWN7832",
+        "status":  "ACTIVE",
+        "categoryName":  "Switch Gerenciável",
+        "categorySlug":  "switch-gerenciavel",
+        "images":  [
+
+                   ]
+    },
+    {
+        "name":  "Grandstream GWN7664ELR - AP Outdoor MU-MIMO 4x4 Wi-Fi 6 - 300m",
+        "slug":  "grandstream-gwn7664elr-ap-outdoor-mu-mimo-4x4-wi-fi-6-300m",
+        "shortDescription":  "AP Outdoor MU-MIMO 4x4 Wi-Fi 6 - 300m",
+        "description":  "Fabricante: Grandstream. Modelo: GWN7664ELR. Categoria: Access Point. Descrição: AP Outdoor MU-MIMO 4x4 Wi-Fi 6 - 300m.",
+        "price":  990.09,
+        "stock":  1,
+        "sku":  "GWN7664ELR",
+        "status":  "ACTIVE",
+        "categoryName":  "Access Point",
+        "categorySlug":  "access-point",
+        "images":  [
+
+                   ]
+    },
+    {
+        "name":  "Grandstream GWN7672 - AP Indoor MU-MIMO 2x2 Wi-Fi 7 - 175m",
+        "slug":  "grandstream-gwn7672-ap-indoor-mu-mimo-2x2-wi-fi-7-175m",
+        "shortDescription":  "AP Indoor MU-MIMO 2x2 Wi-Fi 7 - 175m",
+        "description":  "Fabricante: Grandstream. Modelo: GWN7672. Categoria: Access Point. Descrição: AP Indoor MU-MIMO 2x2 Wi-Fi 7 - 175m.",
+        "price":  986.64,
+        "stock":  1,
+        "sku":  "GWN7672-2",
+        "status":  "ACTIVE",
+        "categoryName":  "Access Point",
+        "categorySlug":  "access-point",
+        "images":  [
+
+                   ]
+    },
+    {
+        "name":  "Hikvision DS-3E1105P-EI/M V2 - Switch 4P Fast Smart PoE / 1 Fast RJ45",
+        "slug":  "hikvision-ds-3e1105p-ei-m-v2-switch-4p-fast-smart-poe-1-fast-rj45",
+        "shortDescription":  "Switch 4P Fast Smart PoE / 1 Fast RJ45",
+        "description":  "Fabricante: Hikvision. Modelo: DS-3E1105P-EI/M V2. Categoria: Switch PoE. Descrição: Switch 4P Fast Smart PoE / 1 Fast RJ45.",
+        "price":  311.85,
+        "stock":  1,
+        "sku":  "DS-3E1105P-EI/M V2",
+        "status":  "ACTIVE",
+        "categoryName":  "Switch PoE",
+        "categorySlug":  "switch-poe",
+        "images":  [
+
+                   ]
+    },
+    {
+        "name":  "Hikvision DS-3E1505P-EI/M - Switch 4P Gigabit Smart PoE / 1 Gigabit RJ45",
+        "slug":  "hikvision-ds-3e1505p-ei-m-switch-4p-gigabit-smart-poe-1-gigabit-rj45",
+        "shortDescription":  "Switch 4P Gigabit Smart PoE / 1 Gigabit RJ45",
+        "description":  "Fabricante: Hikvision. Modelo: DS-3E1505P-EI/M. Categoria: Switch PoE. Descrição: Switch 4P Gigabit Smart PoE / 1 Gigabit RJ45.",
+        "price":  322.76,
+        "stock":  1,
+        "sku":  "DS-3E1505P-EI/M",
+        "status":  "ACTIVE",
+        "categoryName":  "Switch PoE",
+        "categorySlug":  "switch-poe",
+        "images":  [
+
+                   ]
+    },
+    {
+        "name":  "Hikvision DS-3E1506P-EI/M - Switch 4P Gigabit Smart PoE / 2 Gigabit RJ45",
+        "slug":  "hikvision-ds-3e1506p-ei-m-switch-4p-gigabit-smart-poe-2-gigabit-rj45",
+        "shortDescription":  "Switch 4P Gigabit Smart PoE / 2 Gigabit RJ45",
+        "description":  "Fabricante: Hikvision. Modelo: DS-3E1506P-EI/M. Categoria: Switch PoE. Descrição: Switch 4P Gigabit Smart PoE / 2 Gigabit RJ45.",
+        "price":  352.34,
+        "stock":  1,
+        "sku":  "DS-3E1506P-EI/M",
+        "status":  "ACTIVE",
+        "categoryName":  "Switch PoE",
+        "categorySlug":  "switch-poe",
+        "images":  [
+
+                   ]
+    },
+    {
+        "name":  "Hikvision DS-3E1309P-EI/M - Switch 8P Fast Smart PoE / 1 Gigabit RJ45",
+        "slug":  "hikvision-ds-3e1309p-ei-m-switch-8p-fast-smart-poe-1-gigabit-rj45",
+        "shortDescription":  "Switch 8P Fast Smart PoE / 1 Gigabit RJ45",
+        "description":  "Fabricante: Hikvision. Modelo: DS-3E1309P-EI/M. Categoria: Switch PoE. Descrição: Switch 8P Fast Smart PoE / 1 Gigabit RJ45.",
+        "price":  522.81,
+        "stock":  1,
+        "sku":  "DS-3E1309P-EI/M",
+        "status":  "ACTIVE",
+        "categoryName":  "Switch PoE",
+        "categorySlug":  "switch-poe",
+        "images":  [
+
+                   ]
+    },
+    {
+        "name":  "TP-Link SG3210XHP-M2 - Switch 10P L2+ JetStream 8P PoE+ 2.5G + 2 SFP+10G",
+        "slug":  "tp-link-sg3210xhp-m2-switch-10p-l2-jetstream-8p-poe-2-5g-2-sfp-10g",
+        "shortDescription":  "Switch 10P L2+ JetStream 8P PoE+ 2.5G + 2 SFP+10G",
+        "description":  "Fabricante: TP-Link. Modelo: SG3210XHP-M2. Categoria: Switch Gerenciável. Descrição: Switch 10P L2+ JetStream 8P PoE+ 2.5G + 2 SFP+10G.",
+        "price":  1970.81,
+        "stock":  1,
+        "sku":  "SG3210XHP-M2",
+        "status":  "ACTIVE",
+        "categoryName":  "Switch Gerenciável",
+        "categorySlug":  "switch-gerenciavel",
+        "images":  [
+
+                   ]
+    },
+    {
+        "name":  "TP-Link TL-SG1210MP - Switch 10P Gigabit 8P PoE+",
+        "slug":  "tp-link-tl-sg1210mp-switch-10p-gigabit-8p-poe",
+        "shortDescription":  "Switch 10P Gigabit 8P PoE+",
+        "description":  "Fabricante: TP-Link. Modelo: TL-SG1210MP. Categoria: Switch PoE. Descrição: Switch 10P Gigabit 8P PoE+.",
+        "price":  1113.79,
+        "stock":  1,
+        "sku":  "TL-SG1210MP",
+        "status":  "ACTIVE",
+        "categoryName":  "Switch PoE",
+        "categorySlug":  "switch-poe",
+        "images":  [
+
+                   ]
+    },
+    {
+        "name":  "TP-Link TL-SG1210P - Switch 10P Gigabit 9P + 1 SFP + 8 PoE+",
+        "slug":  "tp-link-tl-sg1210p-switch-10p-gigabit-9p-1-sfp-8-poe",
+        "shortDescription":  "Switch 10P Gigabit 9P + 1 SFP + 8 PoE+",
+        "description":  "Fabricante: TP-Link. Modelo: TL-SG1210P. Categoria: Switch PoE. Descrição: Switch 10P Gigabit 9P + 1 SFP + 8 PoE+.",
+        "price":  561.54,
+        "stock":  1,
+        "sku":  "TL-SG1210P",
+        "status":  "ACTIVE",
+        "categoryName":  "Switch PoE",
+        "categorySlug":  "switch-poe",
+        "images":  [
+
+                   ]
+    },
+    {
+        "name":  "TP-Link TL-SG1210MPE - Switch 10P Gigabit Easy Smart 8 PoE+",
+        "slug":  "tp-link-tl-sg1210mpe-switch-10p-gigabit-easy-smart-8-poe",
+        "shortDescription":  "Switch 10P Gigabit Easy Smart 8 PoE+",
+        "description":  "Fabricante: TP-Link. Modelo: TL-SG1210MPE. Categoria: Switch PoE. Descrição: Switch 10P Gigabit Easy Smart 8 PoE+.",
+        "price":  1147.05,
+        "stock":  1,
+        "sku":  "TL-SG1210MPE",
+        "status":  "ACTIVE",
+        "categoryName":  "Switch PoE",
+        "categorySlug":  "switch-poe",
+        "images":  [
+
+                   ]
+    },
+    {
+        "name":  "TP-Link TL-SL1218P - Switch 16P Fast PoE+ 2 Gigabit",
+        "slug":  "tp-link-tl-sl1218p-switch-16p-fast-poe-2-gigabit",
+        "shortDescription":  "Switch 16P Fast PoE+ 2 Gigabit",
+        "description":  "Fabricante: TP-Link. Modelo: TL-SL1218P. Categoria: Switch PoE. Descrição: Switch 16P Fast PoE+ 2 Gigabit.",
+        "price":  972.34,
+        "stock":  1,
+        "sku":  "TL-SL1218P",
+        "status":  "ACTIVE",
+        "categoryName":  "Switch PoE",
+        "categorySlug":  "switch-poe",
+        "images":  [
+
+                   ]
+    },
+    {
+        "name":  "Grandstream GWN7702P - Switch 16P Gigabit 8P PoE+",
+        "slug":  "grandstream-gwn7702p-switch-16p-gigabit-8p-poe",
+        "shortDescription":  "Switch 16P Gigabit 8P PoE+",
+        "description":  "Fabricante: Grandstream. Modelo: GWN7702P. Categoria: Switch PoE. Descrição: Switch 16P Gigabit 8P PoE+.",
+        "price":  639,
+        "stock":  1,
+        "sku":  "GWN7702P",
+        "status":  "ACTIVE",
+        "categoryName":  "Switch PoE",
+        "categorySlug":  "switch-poe",
+        "images":  [
+
+                   ]
+    },
+    {
+        "name":  "TP-Link TL-SG1218MPE - Switch 16P Gigabit Easy Smart PoE+ 2 SFP",
+        "slug":  "tp-link-tl-sg1218mpe-switch-16p-gigabit-easy-smart-poe-2-sfp",
+        "shortDescription":  "Switch 16P Gigabit Easy Smart PoE+ 2 SFP",
+        "description":  "Fabricante: TP-Link. Modelo: TL-SG1218MPE. Categoria: Switch PoE. Descrição: Switch 16P Gigabit Easy Smart PoE+ 2 SFP.",
+        "price":  1868.2,
+        "stock":  1,
+        "sku":  "TL-SG1218MPE",
+        "status":  "ACTIVE",
+        "categoryName":  "Switch PoE",
+        "categorySlug":  "switch-poe",
+        "images":  [
+
+                   ]
+    },
+    {
+        "name":  "Grandstream GWN7802P - Switch 16P Gigabit PoE 4 SFP L2+",
+        "slug":  "grandstream-gwn7802p-switch-16p-gigabit-poe-4-sfp-l2",
+        "shortDescription":  "Switch 16P Gigabit PoE 4 SFP L2+",
+        "description":  "Fabricante: Grandstream. Modelo: GWN7802P. Categoria: Switch Gerenciável. Descrição: Switch 16P Gigabit PoE 4 SFP L2+.",
+        "price":  1389,
+        "stock":  1,
+        "sku":  "GWN7802P",
+        "status":  "ACTIVE",
+        "categoryName":  "Switch Gerenciável",
+        "categorySlug":  "switch-gerenciavel",
+        "images":  [
+
+                   ]
+    },
+    {
+        "name":  "Grandstream GWN7812P - Switch 16P Gigabit PoE 4 SFP+10G L3",
+        "slug":  "grandstream-gwn7812p-switch-16p-gigabit-poe-4-sfp-10g-l3",
+        "shortDescription":  "Switch 16P Gigabit PoE 4 SFP+10G L3",
+        "description":  "Fabricante: Grandstream. Modelo: GWN7812P. Categoria: Switch Gerenciável. Descrição: Switch 16P Gigabit PoE 4 SFP+10G L3.",
+        "price":  1799,
+        "stock":  1,
+        "sku":  "GWN7812P",
+        "status":  "ACTIVE",
+        "categoryName":  "Switch Gerenciável",
+        "categorySlug":  "switch-gerenciavel",
+        "images":  [
+
+                   ]
+    },
+    {
+        "name":  "Ruijie/Reyee RG-ES220GS-P - Switch 16P PoE+ GE 2 GE 2 SFP L2",
+        "slug":  "ruijie-reyee-rg-es220gs-p-switch-16p-poe-ge-2-ge-2-sfp-l2",
+        "shortDescription":  "Switch 16P PoE+ GE 2 GE 2 SFP L2",
+        "description":  "Fabricante: Ruijie/Reyee. Modelo: RG-ES220GS-P. Categoria: Switch Gerenciável. Descrição: Switch 16P PoE+ GE 2 GE 2 SFP L2.",
+        "price":  1679.28,
+        "stock":  1,
+        "sku":  "RG-ES220GS-P",
+        "status":  "ACTIVE",
+        "categoryName":  "Switch Gerenciável",
+        "categorySlug":  "switch-gerenciavel",
+        "images":  [
+
+                   ]
+    },
+    {
+        "name":  "TP-Link TL-SL1226P - Switch 24P Fast PoE+ 2 Gigabit 2 SFP",
+        "slug":  "tp-link-tl-sl1226p-switch-24p-fast-poe-2-gigabit-2-sfp",
+        "shortDescription":  "Switch 24P Fast PoE+ 2 Gigabit 2 SFP",
+        "description":  "Fabricante: TP-Link. Modelo: TL-SL1226P. Categoria: Switch PoE. Descrição: Switch 24P Fast PoE+ 2 Gigabit 2 SFP.",
+        "price":  1254.16,
+        "stock":  1,
+        "sku":  "TL-SL1226P",
+        "status":  "ACTIVE",
+        "categoryName":  "Switch PoE",
+        "categorySlug":  "switch-poe",
+        "images":  [
+
+                   ]
+    },
+    {
+        "name":  "Hikvision DS-3E0326P-E/M - Switch 24P Fast Smart PoE 1 Gigabit 1 SFP",
+        "slug":  "hikvision-ds-3e0326p-e-m-switch-24p-fast-smart-poe-1-gigabit-1-sfp",
+        "shortDescription":  "Switch 24P Fast Smart PoE 1 Gigabit 1 SFP",
+        "description":  "Fabricante: Hikvision. Modelo: DS-3E0326P-E/M. Categoria: Switch PoE. Descrição: Switch 24P Fast Smart PoE 1 Gigabit 1 SFP.",
+        "price":  1728.98,
+        "stock":  1,
+        "sku":  "DS-3E0326P-E/M",
+        "status":  "ACTIVE",
+        "categoryName":  "Switch PoE",
+        "categorySlug":  "switch-poe",
+        "images":  [
+
+                   ]
+    },
+    {
+        "name":  "TP-Link TL-SG3428MP - Switch 24P Gigabit JetStream L2+ PoE+ 4 SFP",
+        "slug":  "tp-link-tl-sg3428mp-switch-24p-gigabit-jetstream-l2-poe-4-sfp",
+        "shortDescription":  "Switch 24P Gigabit JetStream L2+ PoE+ 4 SFP",
+        "description":  "Fabricante: TP-Link. Modelo: TL-SG3428MP. Categoria: Switch Gerenciável. Descrição: Switch 24P Gigabit JetStream L2+ PoE+ 4 SFP.",
+        "price":  3208.87,
+        "stock":  1,
+        "sku":  "TL-SG3428MP",
+        "status":  "ACTIVE",
+        "categoryName":  "Switch Gerenciável",
+        "categorySlug":  "switch-gerenciavel",
+        "images":  [
+
+                   ]
+    },
+    {
+        "name":  "Grandstream GWN7803P - Switch 24P Gigabit PoE 4 SFP L2+",
+        "slug":  "grandstream-gwn7803p-switch-24p-gigabit-poe-4-sfp-l2",
+        "shortDescription":  "Switch 24P Gigabit PoE 4 SFP L2+",
+        "description":  "Fabricante: Grandstream. Modelo: GWN7803P. Categoria: Switch Gerenciável. Descrição: Switch 24P Gigabit PoE 4 SFP L2+.",
+        "price":  1636,
+        "stock":  1,
+        "sku":  "GWN7803P",
+        "status":  "ACTIVE",
+        "categoryName":  "Switch Gerenciável",
+        "categorySlug":  "switch-gerenciavel",
+        "images":  [
+
+                   ]
+    },
+    {
+        "name":  "Grandstream GWN7822P - Switch 24P Gigabit PoE 4 SFP+10G Multi-Gigabit",
+        "slug":  "grandstream-gwn7822p-switch-24p-gigabit-poe-4-sfp-10g-multi-gigabit",
+        "shortDescription":  "Switch 24P Gigabit PoE 4 SFP+10G Multi-Gigabit",
+        "description":  "Fabricante: Grandstream. Modelo: GWN7822P. Categoria: Switch Gerenciável. Descrição: Switch 24P Gigabit PoE 4 SFP+10G Multi-Gigabit.",
+        "price":  2359,
+        "stock":  1,
+        "sku":  "GWN7822P",
+        "status":  "ACTIVE",
+        "categoryName":  "Switch Gerenciável",
+        "categorySlug":  "switch-gerenciavel",
+        "images":  [
+
+                   ]
+    },
+    {
+        "name":  "IP-COM G5328P-24-410W - Switch 24P Gigabit PoE L3",
+        "slug":  "ip-com-g5328p-24-410w-switch-24p-gigabit-poe-l3",
+        "shortDescription":  "Switch 24P Gigabit PoE L3",
+        "description":  "Fabricante: IP-COM. Modelo: G5328P-24-410W. Categoria: Switch Gerenciável. Descrição: Switch 24P Gigabit PoE L3.",
+        "price":  2953,
+        "stock":  1,
+        "sku":  "G5328P-24-410W",
+        "status":  "ACTIVE",
+        "categoryName":  "Switch Gerenciável",
+        "categorySlug":  "switch-gerenciavel",
+        "images":  [
+
+                   ]
+    },
+    {
+        "name":  "Huawei S110-24LP2SR - Switch 24P Gigabit PoE+ 124W 2 SFP (eKit)",
+        "slug":  "huawei-s110-24lp2sr-switch-24p-gigabit-poe-124w-2-sfp-ekit",
+        "shortDescription":  "Switch 24P Gigabit PoE+ 124W 2 SFP (eKit)",
+        "description":  "Fabricante: Huawei. Modelo: S110-24LP2SR. Categoria: Switch PoE. Descrição: Switch 24P Gigabit PoE+ 124W 2 SFP (eKit).",
+        "price":  1340,
+        "stock":  1,
+        "sku":  "S110-24LP2SR",
+        "status":  "ACTIVE",
+        "categoryName":  "Switch PoE",
+        "categorySlug":  "switch-poe",
+        "images":  [
+
+                   ]
+    },
+    {
+        "name":  "Ruijie/Reyee RG-NBS3100-24GT4SFP-P - Switch 24P PoE GE 4 SFP L2",
+        "slug":  "ruijie-reyee-rg-nbs3100-24gt4sfp-p-switch-24p-poe-ge-4-sfp-l2",
+        "shortDescription":  "Switch 24P PoE GE 4 SFP L2",
+        "description":  "Fabricante: Ruijie/Reyee. Modelo: RG-NBS3100-24GT4SFP-P. Categoria: Switch Gerenciável. Descrição: Switch 24P PoE GE 4 SFP L2.",
+        "price":  355657,
+        "stock":  1,
+        "sku":  "RG-NBS3100-24GT4SFP-P",
+        "status":  "ACTIVE",
+        "categoryName":  "Switch Gerenciável",
+        "categorySlug":  "switch-gerenciavel",
+        "images":  [
+
+                   ]
+    },
+    {
+        "name":  "TP-Link TL-SG3452P - Switch 48P Gigabit JetStream L2+ PoE+ 4 SFP",
+        "slug":  "tp-link-tl-sg3452p-switch-48p-gigabit-jetstream-l2-poe-4-sfp",
+        "shortDescription":  "Switch 48P Gigabit JetStream L2+ PoE+ 4 SFP",
+        "description":  "Fabricante: TP-Link. Modelo: TL-SG3452P. Categoria: Switch Gerenciável. Descrição: Switch 48P Gigabit JetStream L2+ PoE+ 4 SFP.",
+        "price":  5173.34,
+        "stock":  1,
+        "sku":  "TL-SG3452P",
+        "status":  "ACTIVE",
+        "categoryName":  "Switch Gerenciável",
+        "categorySlug":  "switch-gerenciavel",
+        "images":  [
+
+                   ]
+    },
+    {
+        "name":  "Grandstream GWN7806P - Switch 48P Gigabit PoE 6 SFP+10G L2+",
+        "slug":  "grandstream-gwn7806p-switch-48p-gigabit-poe-6-sfp-10g-l2",
+        "shortDescription":  "Switch 48P Gigabit PoE 6 SFP+10G L2+",
+        "description":  "Fabricante: Grandstream. Modelo: GWN7806P. Categoria: Switch Gerenciável. Descrição: Switch 48P Gigabit PoE 6 SFP+10G L2+.",
+        "price":  3329,
+        "stock":  1,
+        "sku":  "GWN7806P",
+        "status":  "ACTIVE",
+        "categoryName":  "Switch Gerenciável",
+        "categorySlug":  "switch-gerenciavel",
+        "images":  [
+
+                   ]
+    },
+    {
+        "name":  "Ruijie/Reyee RG-NBS3100-48GT4SFP-P - Switch 48P PoE GE 4 SFP L2",
+        "slug":  "ruijie-reyee-rg-nbs3100-48gt4sfp-p-switch-48p-poe-ge-4-sfp-l2",
+        "shortDescription":  "Switch 48P PoE GE 4 SFP L2",
+        "description":  "Fabricante: Ruijie/Reyee. Modelo: RG-NBS3100-48GT4SFP-P. Categoria: Switch Gerenciável. Descrição: Switch 48P PoE GE 4 SFP L2.",
+        "price":  5724.83,
+        "stock":  1,
+        "sku":  "RG-NBS3100-48GT4SFP-P",
+        "status":  "ACTIVE",
+        "categoryName":  "Switch Gerenciável",
+        "categorySlug":  "switch-gerenciavel",
+        "images":  [
+
+                   ]
+    },
+    {
+        "name":  "TP-Link TL-SF1005LP - Switch 5P Fast 4 PoE",
+        "slug":  "tp-link-tl-sf1005lp-switch-5p-fast-4-poe",
+        "shortDescription":  "Switch 5P Fast 4 PoE",
+        "description":  "Fabricante: TP-Link. Modelo: TL-SF1005LP. Categoria: Switch PoE. Descrição: Switch 5P Fast 4 PoE.",
+        "price":  225.27,
+        "stock":  1,
+        "sku":  "TL-SF1005LP",
+        "status":  "ACTIVE",
+        "categoryName":  "Switch PoE",
+        "categorySlug":  "switch-poe",
+        "images":  [
+
+                   ]
+    },
+    {
+        "name":  "Ruijie/Reyee RG-ES205GC-P - Switch 5P GE 4 PoE L2",
+        "slug":  "ruijie-reyee-rg-es205gc-p-switch-5p-ge-4-poe-l2",
+        "shortDescription":  "Switch 5P GE 4 PoE L2",
+        "description":  "Fabricante: Ruijie/Reyee. Modelo: RG-ES205GC-P. Categoria: Switch Gerenciável. Descrição: Switch 5P GE 4 PoE L2.",
+        "price":  430.25,
+        "stock":  1,
+        "sku":  "RG-ES205GC-P",
+        "status":  "ACTIVE",
+        "categoryName":  "Switch Gerenciável",
+        "categorySlug":  "switch-gerenciavel",
+        "images":  [
+
+                   ]
+    },
+    {
+        "name":  "Grandstream GWN7710R - Switch 5P Gigabit 4 PoE 1 SFP - Outdoor",
+        "slug":  "grandstream-gwn7710r-switch-5p-gigabit-4-poe-1-sfp-outdoor",
+        "shortDescription":  "Switch 5P Gigabit 4 PoE 1 SFP - Outdoor",
+        "description":  "Fabricante: Grandstream. Modelo: GWN7710R. Categoria: Switch PoE. Descrição: Switch 5P Gigabit 4 PoE 1 SFP - Outdoor.",
+        "price":  489,
+        "stock":  1,
+        "sku":  "GWN7710R",
+        "status":  "ACTIVE",
+        "categoryName":  "Switch PoE",
+        "categorySlug":  "switch-poe",
+        "images":  [
+
+                   ]
+    },
+    {
+        "name":  "Grandstream GWN7700P - Switch 5P Gigabit 4 PoE",
+        "slug":  "grandstream-gwn7700p-switch-5p-gigabit-4-poe",
+        "shortDescription":  "Switch 5P Gigabit 4 PoE",
+        "description":  "Fabricante: Grandstream. Modelo: GWN7700P. Categoria: Switch PoE. Descrição: Switch 5P Gigabit 4 PoE.",
+        "price":  219,
+        "stock":  1,
+        "sku":  "GWN7700P",
+        "status":  "ACTIVE",
+        "categoryName":  "Switch PoE",
+        "categorySlug":  "switch-poe",
+        "images":  [
+
+                   ]
+    },
+    {
+        "name":  "Ruijie/Reyee RG-ES206GC-P - Switch 6P GE 4 PoE L2",
+        "slug":  "ruijie-reyee-rg-es206gc-p-switch-6p-ge-4-poe-l2",
+        "shortDescription":  "Switch 6P GE 4 PoE L2",
+        "description":  "Fabricante: Ruijie/Reyee. Modelo: RG-ES206GC-P. Categoria: Switch Gerenciável. Descrição: Switch 6P GE 4 PoE L2.",
+        "price":  435.38,
+        "stock":  1,
+        "sku":  "RG-ES206GC-P",
+        "status":  "ACTIVE",
+        "categoryName":  "Switch Gerenciável",
+        "categorySlug":  "switch-gerenciavel",
+        "images":  [
+
+                   ]
+    },
+    {
+        "name":  "Grandstream GWN7721P - Switch 8P 2.5GE PoE 2 SFP+10G L2 Lite",
+        "slug":  "grandstream-gwn7721p-switch-8p-2-5ge-poe-2-sfp-10g-l2-lite",
+        "shortDescription":  "Switch 8P 2.5GE PoE 2 SFP+10G L2 Lite",
+        "description":  "Fabricante: Grandstream. Modelo: GWN7721P. Categoria: Switch Gerenciável. Descrição: Switch 8P 2.5GE PoE 2 SFP+10G L2 Lite.",
+        "price":  654,
+        "stock":  1,
+        "sku":  "GWN7721P",
+        "status":  "ACTIVE",
+        "categoryName":  "Switch Gerenciável",
+        "categorySlug":  "switch-gerenciavel",
+        "images":  [
+
+                   ]
+    },
+    {
+        "name":  "Grandstream GWN7701P - Switch 8P Gigabit 4 PoE+",
+        "slug":  "grandstream-gwn7701p-switch-8p-gigabit-4-poe",
+        "shortDescription":  "Switch 8P Gigabit 4 PoE+",
+        "description":  "Fabricante: Grandstream. Modelo: GWN7701P. Categoria: Switch PoE. Descrição: Switch 8P Gigabit 4 PoE+.",
+        "price":  249,
+        "stock":  1,
+        "sku":  "GWN7701P",
+        "status":  "ACTIVE",
+        "categoryName":  "Switch PoE",
+        "categorySlug":  "switch-poe",
+        "images":  [
+
+                   ]
+    },
+    {
+        "name":  "Grandstream GWN7701PA - Switch 8P Gigabit 8 PoE+",
+        "slug":  "grandstream-gwn7701pa-switch-8p-gigabit-8-poe",
+        "shortDescription":  "Switch 8P Gigabit 8 PoE+",
+        "description":  "Fabricante: Grandstream. Modelo: GWN7701PA. Categoria: Switch PoE. Descrição: Switch 8P Gigabit 8 PoE+.",
+        "price":  392,
+        "stock":  1,
+        "sku":  "GWN7701PA",
+        "status":  "ACTIVE",
+        "categoryName":  "Switch PoE",
+        "categorySlug":  "switch-poe",
+        "images":  [
+
+                   ]
+    },
+    {
+        "name":  "Grandstream GWN7801P - Switch 8P Gigabit PoE 2 SFP L2+",
+        "slug":  "grandstream-gwn7801p-switch-8p-gigabit-poe-2-sfp-l2",
+        "shortDescription":  "Switch 8P Gigabit PoE 2 SFP L2+",
+        "description":  "Fabricante: Grandstream. Modelo: GWN7801P. Categoria: Switch Gerenciável. Descrição: Switch 8P Gigabit PoE 2 SFP L2+.",
+        "price":  729,
+        "stock":  1,
+        "sku":  "GWN7801P",
+        "status":  "ACTIVE",
+        "categoryName":  "Switch Gerenciável",
+        "categorySlug":  "switch-gerenciavel",
+        "images":  [
+
+                   ]
+    },
+    {
+        "name":  "Grandstream GWN7821P - Switch 8P Gigabit PoE 2 SFP+10G Multi-Gigabit",
+        "slug":  "grandstream-gwn7821p-switch-8p-gigabit-poe-2-sfp-10g-multi-gigabit",
+        "shortDescription":  "Switch 8P Gigabit PoE 2 SFP+10G Multi-Gigabit",
+        "description":  "Fabricante: Grandstream. Modelo: GWN7821P. Categoria: Switch Gerenciável. Descrição: Switch 8P Gigabit PoE 2 SFP+10G Multi-Gigabit.",
+        "price":  1598,
+        "stock":  1,
+        "sku":  "GWN7821P",
+        "status":  "ACTIVE",
+        "categoryName":  "Switch Gerenciável",
+        "categorySlug":  "switch-gerenciavel",
+        "images":  [
+
+                   ]
+    },
+    {
+        "name":  "TP-Link TL-SF1009P - Switch 9P Fast 8 PoE+",
+        "slug":  "tp-link-tl-sf1009p-switch-9p-fast-8-poe",
+        "shortDescription":  "Switch 9P Fast 8 PoE+",
+        "description":  "Fabricante: TP-Link. Modelo: TL-SF1009P. Categoria: Switch PoE. Descrição: Switch 9P Fast 8 PoE+.",
+        "price":  281.05,
+        "stock":  1,
+        "sku":  "TL-SF1009P",
+        "status":  "ACTIVE",
+        "categoryName":  "Switch PoE",
+        "categorySlug":  "switch-poe",
+        "images":  [
+
+                   ]
+    },
+    {
+        "name":  "Ruijie/Reyee RG-ES209GC-P - Switch 9P PoE GE L2",
+        "slug":  "ruijie-reyee-rg-es209gc-p-switch-9p-poe-ge-l2",
+        "shortDescription":  "Switch 9P PoE GE L2",
+        "description":  "Fabricante: Ruijie/Reyee. Modelo: RG-ES209GC-P. Categoria: Switch Gerenciável. Descrição: Switch 9P PoE GE L2.",
+        "price":  843.26,
+        "stock":  1,
+        "sku":  "RG-ES209GC-P",
+        "status":  "ACTIVE",
+        "categoryName":  "Switch Gerenciável",
+        "categorySlug":  "switch-gerenciavel",
+        "images":  [
+
+                   ]
+    },
+    {
+        "name":  "Cudy POE40 - Switch Extensor/Injetor 4P Gigabit PoE++",
+        "slug":  "cudy-poe40-switch-extensor-injetor-4p-gigabit-poe",
+        "shortDescription":  "Switch Extensor/Injetor 4P Gigabit PoE++",
+        "description":  "Fabricante: Cudy. Modelo: POE40. Categoria: Injetor PoE. Descrição: Switch Extensor/Injetor 4P Gigabit PoE++.",
+        "price":  299,
+        "stock":  1,
+        "sku":  "POE40",
+        "status":  "ACTIVE",
+        "categoryName":  "Injetor PoE",
+        "categorySlug":  "injetor-poe",
+        "images":  [
+
+                   ]
+    }
+]

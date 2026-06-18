@@ -79,6 +79,24 @@ npm run db:seed
 
 Use esse baseline apenas quando a estrutura existente já corresponde ao schema atual. Para um banco novo, use `npm run db:migrate`.
 
+## Produtos da planilha ORA
+
+A planilha `Cópia de banco_precos_ora.xlsx` foi adaptada para o formato do cadastro da loja em `prisma/products.ora.json`.
+
+Campos usados da planilha:
+
+- `Fabricante`
+- `Categoria`
+- `Modelo`
+- `Descricao`
+- `Preco`
+
+Campos ignorados porque não fazem parte do cadastro público da loja: fornecedor, NCM, pagamento, data, proposta e contato.
+
+O seed cria as categorias da planilha e cadastra os produtos pelo `sku`. Produtos já existentes com o mesmo SKU não são sobrescritos, para preservar edições feitas no painel administrativo.
+
+Foram importadas somente as linhas com produto real e preço positivo. Linhas de teste, linhas sem preço e linhas vazias ficaram fora do arquivo.
+
 ## Rodando com Docker
 
 O Compose sobe dois serviços: `app` e `postgres`. O app acessa o PostgreSQL interno pelo host `postgres:5432`.
@@ -161,7 +179,7 @@ DATABASE_PUBLIC_URL=postgresql://USUARIO:SENHA_URL_ENCODED@HOST_PUBLICO:PORTA_PU
 - `npm run db:deploy`: aplica migrations em produção ou CI.
 - `npm run db:baseline:postgres`: marca a migration inicial como aplicada em uma base PostgreSQL existente.
 - `npm run db:push`: sincroniza schema sem histórico de migration; use só para protótipos.
-- `npm run db:seed`: cria admin, categorias padrão e banner padrão.
+- `npm run db:seed`: cria admin, categorias padrão, banner padrão e produtos de `prisma/products.ora.json`.
 
 ## Admin
 
