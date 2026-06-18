@@ -8,6 +8,9 @@
     "start": "next start -p 3007",
     "lint": "eslint",
     "prisma:generate": "prisma generate",
+    "db:migrate": "prisma migrate dev",
+    "db:deploy": "prisma migrate deploy",
+    "db:baseline:postgres": "prisma migrate resolve --applied 20260618113000_init_postgresql",
     "db:push": "prisma db push",
     "db:seed": "prisma db seed"
   },

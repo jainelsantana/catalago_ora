@@ -309,11 +309,10 @@ async function main() {
   console.log(`[startup] Database target: ${describeDatabaseUrl(databaseUrl)}`);
 
   await waitForDatabase();
-  await runCommand("Applying Prisma schema", process.execPath, [
+  await runCommand("Applying Prisma migrations", process.execPath, [
     "node_modules/prisma/build/index.js",
-    "db",
-    "push",
-    "--skip-generate",
+    "migrate",
+    "deploy",
   ]);
   await runCommand("Running Prisma seed", process.execPath, ["prisma/seed.js"]);
 

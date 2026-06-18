@@ -1,10 +1,10 @@
 # Catálogo ORA
 
-Aplicação React full-stack com Next.js 16 App Router para catálogo público, painel administrativo, upload de imagens, autenticação e APIs internas com Prisma/PostgreSQL.
+Aplicação full-stack com Next.js 16 App Router para catálogo público, painel administrativo, upload de imagens, autenticação e APIs internas. O banco oficial do projeto é PostgreSQL via Prisma.
 
 ## Stack
 
-- React 19 com componentes funcionais
+- React 19
 - Next.js 16 App Router
 - TypeScript
 - Prisma + PostgreSQL
@@ -14,39 +14,36 @@ Aplicação React full-stack com Next.js 16 App Router para catálogo público, 
 - Tailwind CSS 4
 - Docker multi-stage com `output: "standalone"`
 
-## Estrutura
+## Banco de dados
 
-```txt
-src/
-  app/
-    admin/
-    api/
-    produto/[slug]/
-    uploads/[...path]/
-    layout.tsx
-    page.tsx
-    providers.tsx
-  components/
-  features/
-  lib/
-  types/
-  proxy.ts
-prisma/
-scripts/
-public/
-Dockerfile
-docker-compose.yml
+O schema canônico do Prisma fica em `prisma/schema.prisma`.
+
+As alterações do banco são versionadas em `prisma/migrations/`. A migration inicial do PostgreSQL é:
+
+```text
+prisma/migrations/20260618113000_init_postgresql/migration.sql
 ```
+
+Use `prisma migrate` como fluxo padrão:
+
+```bash
+npm run db:migrate
+npm run db:seed
+```
+
+Em produção, o script `scripts/start-production.js` espera o PostgreSQL responder, executa `prisma migrate deploy`, roda o seed e só então inicia o servidor Next.
 
 ## Rodando localmente
 
-1. Instale dependências:
+1. Instale as dependências:
 
 ```bash
 npm install
 ```
 
-2. Configure `.env` para um PostgreSQL acessível pela máquina:
+2. Crie um banco PostgreSQL local chamado `catalogdb`.
+
+3. Configure `.env`:
 
 ```env
 DATABASE_URL=postgresql://postgres:postgres@localhost:5432/catalogdb?schema=public
@@ -55,14 +52,14 @@ NEXTAUTH_SECRET=troque_para_um_segredo_longo_e_seguro
 NEXT_PUBLIC_UPLOAD_API_URL=/api/upload
 ```
 
-3. Prepare banco e seed:
+4. Aplique migrations e seed:
 
 ```bash
-npm run db:push
+npm run db:migrate
 npm run db:seed
 ```
 
-4. Rode a aplicação:
+5. Rode a aplicação:
 
 ```bash
 npm run dev
@@ -70,15 +67,36 @@ npm run dev
 
 Acesse `http://localhost:3007`.
 
+## Migrando uma base existente
+
+Se o PostgreSQL já tem as tabelas criadas anteriormente com `prisma db push`, marque a migration inicial como aplicada uma única vez:
+
+```bash
+npm run db:baseline:postgres
+npm run db:deploy
+npm run db:seed
+```
+
+Use esse baseline apenas quando a estrutura existente já corresponde ao schema atual. Para um banco novo, use `npm run db:migrate`.
+
 ## Rodando com Docker
 
-O Compose sobe dois serviços: `app` e `postgres`. O `app` usa o PostgreSQL interno pelo host `postgres:5432` com usuário `catalogadmin`, senha `SecurePassw0rd2024` e banco `catalogdb`.
+O Compose sobe dois serviços: `app` e `postgres`. O app acessa o PostgreSQL interno pelo host `postgres:5432`.
 
 ```bash
 docker compose up -d --build
 ```
 
 Acesse `http://localhost:3007`.
+
+Credenciais locais do Compose:
+
+```env
+DATABASE_URL=postgresql://catalogadmin:SecurePassw0rd2024@postgres:5432/catalogdb?schema=public
+POSTGRES_USER=catalogadmin
+POSTGRES_PASSWORD=SecurePassw0rd2024
+POSTGRES_DB=catalogdb
+```
 
 Comandos úteis:
 
@@ -88,7 +106,7 @@ docker compose logs -f app
 docker compose down
 ```
 
-Se um volume antigo de Postgres tiver credenciais incompatíveis, pare e remova os volumes somente se puder perder os dados locais. Isso é comum depois de trocar `postgres/postgres` para `catalogadmin/SecurePassw0rd2024`:
+Se um volume antigo do Postgres tiver credenciais incompatíveis e você puder perder os dados locais:
 
 ```bash
 docker compose down -v
@@ -99,7 +117,7 @@ docker compose up -d --build
 
 Use o build pack **Dockerfile** e exponha a porta `3007`.
 
-No recurso PostgreSQL do Coolify, copie a **Internal URL** do banco e configure a aplicação com:
+No recurso PostgreSQL do Coolify, copie a **Internal URL** do banco e configure:
 
 ```env
 DATABASE_URL=postgresql://USUARIO:SENHA_URL_ENCODED@HOST_INTERNO_REAL:5432/catalogdb?schema=public
@@ -108,11 +126,15 @@ NEXTAUTH_SECRET=troque_para_um_segredo_longo_e_seguro
 NEXT_PUBLIC_UPLOAD_API_URL=/api/upload
 ```
 
-A variável `DATABASE_URL` é obrigatória no Coolify. Não deixe `HOST_INTERNO_DO_POSTGRES`, `USER` ou `SENHA_URL_ENCODED` no valor de `DATABASE_URL`; esses nomes são apenas exemplos.
+Regras importantes:
 
-Se a senha tiver caracteres especiais, use a URL interna já copiada do Coolify ou codifique caracteres como `@` para `%40`.
+- `DATABASE_URL` deve apontar para PostgreSQL.
+- No Coolify, prefira a Internal URL quando app e banco estiverem na mesma rede.
+- Não use `localhost`, `127.0.0.1`, `db`, `USER`, `SENHA_URL_ENCODED` ou `HOST_INTERNO_DO_POSTGRES` como valores literais.
+- Se a senha tiver caracteres especiais, use a URL já copiada do Coolify ou codifique caracteres como `@` para `%40`.
+- Se a variável contiver `$`, marque a variável como Literal no Coolify.
 
-Se preferir, configure variáveis separadas:
+Como alternativa, a aplicação também aceita variáveis separadas para montar a URL:
 
 ```env
 DATABASE_HOST=HOST_INTERNO_REAL
@@ -122,13 +144,11 @@ DATABASE_PASSWORD=SENHA_SEM_URL_ENCODE
 DATABASE_NAME=catalogdb
 ```
 
-Se o log mostrar `Can't reach database server at postgresql-xxxx:5432`, o app não está conseguindo acessar a rede interna do banco. Nesse caso, coloque app e PostgreSQL no mesmo projeto/ambiente/rede do Coolify ou habilite acesso público no PostgreSQL e configure uma URL pública como fallback:
+Se o app não alcançar o host interno do PostgreSQL, coloque app e banco na mesma rede do Coolify ou configure uma URL pública de fallback:
 
 ```env
 DATABASE_PUBLIC_URL=postgresql://USUARIO:SENHA_URL_ENCODED@HOST_PUBLICO:PORTA_PUBLICA/catalogdb?schema=public
 ```
-
-Na inicialização, a aplicação tenta `DATABASE_URL` primeiro e, se a conexão falhar, tenta `DATABASE_PUBLIC_URL`, `DATABASE_FALLBACK_URL` ou `COOLIFY_DATABASE_URL` quando essas variáveis existirem.
 
 ## Scripts
 
@@ -137,7 +157,10 @@ Na inicialização, a aplicação tenta `DATABASE_URL` primeiro e, se a conexão
 - `npm run start`: inicia produção em `localhost:3007`.
 - `npm run lint`: executa ESLint.
 - `npm run prisma:generate`: gera Prisma Client.
-- `npm run db:push`: aplica schema no banco.
+- `npm run db:migrate`: cria/aplica migrations em desenvolvimento.
+- `npm run db:deploy`: aplica migrations em produção ou CI.
+- `npm run db:baseline:postgres`: marca a migration inicial como aplicada em uma base PostgreSQL existente.
+- `npm run db:push`: sincroniza schema sem histórico de migration; use só para protótipos.
 - `npm run db:seed`: cria admin, categorias padrão e banner padrão.
 
 ## Admin
@@ -152,4 +175,4 @@ Na inicialização, a aplicação tenta `DATABASE_URL` primeiro e, se a conexão
 curl http://localhost:3007/api/health
 ```
 
-Retorna `healthy` quando o app consegue conectar ao banco.
+Retorna `healthy` quando o app consegue conectar ao PostgreSQL.

@@ -4,6 +4,7 @@
 - Build type: `Dockerfile`
 - Porta exposta: `3007`
 - CMD de produção: `node scripts/start-production.js`
+- Na inicialização, o app executa `prisma migrate deploy` e depois `prisma/seed.js`.
 
 ## Variáveis de ambiente necessárias
 No Coolify, configure as variáveis do app:
@@ -62,3 +63,4 @@ http://<seu-dominio>/api/health
 ## Observações
 - O arquivo `.env.example` agora já mostra um exemplo de `DATABASE_URL` para Coolify.
 - A aplicação espera que o banco esteja acessível pelo host interno do Coolify no tempo de execução.
+- Se o banco já tiver tabelas criadas por `prisma db push`, execute `npm run db:baseline:postgres` uma vez antes do primeiro deploy com migrations.
